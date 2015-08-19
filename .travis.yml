@@ -8,6 +8,9 @@ install:
   - sudo tar zxvf $HOME/purescript.tar.gz -C /usr/local/bin purescript/psc{,i,-docs,-bundle} --strip-components=1
   - sudo chmod a+x /usr/local/bin/psc{,i,-docs,-bundle}
   - npm install bower gulp -g
-  - npm install && bower install
+  - npm install
+  - bower install --production
 script:
+  - gulp make
+  - bower install
   - gulp test

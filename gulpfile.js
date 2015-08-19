@@ -1,18 +1,9 @@
 'use strict'
 
-
 var gulp        = require('gulp')
   , purescript  = require('gulp-purescript')
   , run         = require('gulp-run')
-  , runSequence = require('run-sequence')
   ;
-
-function sequence() {
-    var args = [].slice.apply(arguments);
-    return function() {
-        runSequence.apply(null, args);
-    };
-}
 
 var sources = [
     'src/**/*.purs',
@@ -43,7 +34,6 @@ gulp.task('docs', function() {
     });
 });
 
-
 gulp.task('make', function() {
     return purescript.psc({
         src: sources,
@@ -66,5 +56,4 @@ gulp.task('test', ['test-make'], function() {
     }).pipe(run('node dist/test.js'));
 });
 
-
-gulp.task("default", sequence("make", "docs"));
+gulp.task("default", ["make", "docs"]);

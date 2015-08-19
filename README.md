@@ -1,8 +1,10 @@
-[![Build Status](https://travis-ci.org/purescript-contrib/purescript-argonaut-core.svg?branch=master)](https://travis-ci.org/purescript-contrib/purescript-argonaut-core)
-
 # purescript-argonaut-core
 
-Core part of __purescript-argonaut__ contains basic types for `Json`, folds over them, tests, printer and parser
+[![Latest release](http://img.shields.io/bower/v/purescript-strongcheck.svg)](https://github.com/purescript-contrib/purescript-strongcheck/releases)
+[![Build Status](https://travis-ci.org/purescript-contrib/purescript-argonaut-core.svg?branch=master)](https://travis-ci.org/purescript-contrib/purescript-argonaut-core)
+[![Maintainer: slamdata](https://img.shields.io/badge/maintainer-slamdata-lightgrey.svg)](http://github.com/slamdata)
+
+Core part of `purescript-argonaut` that contains basic types for `Json`, folds over them, tests, printer and parser.
 
 ## Installation
 
@@ -10,7 +12,7 @@ Core part of __purescript-argonaut__ contains basic types for `Json`, folds over
 bower install purescript-argonaut-core
 ```
 
-## Documentation
+## Module documentation
 
 - [Data.Argonaut.Core](docs/Data/Argonaut/Core.md)
 - [Data.Argonaut.Parser](docs/Data/Argonaut/Parser.md)

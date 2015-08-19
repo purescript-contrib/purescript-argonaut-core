@@ -12,20 +12,17 @@
     "argonaut",
     "json"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/purescript-contrib/purescript-argonaut-core.git"
+  },
   "license": "MIT",
   "dependencies": {
-    "purescript-prelude": "^0.1.2",
+    "purescript-enums": "^0.7.0",
     "purescript-functions": "^0.1.0",
-    "purescript-maybe": "^0.3.4",
-    "purescript-tuples": "^0.4.0",
-    "purescript-maps": "^0.5.0",
-    "purescript-strings": "^0.7.0",
-    "purescript-enums": "^0.7.0"
+    "purescript-maps": "^0.5.0"
   },
   "devDependencies": {
-    "purescript-eff": "^0.1.0",
-    "purescript-console": "^0.1.0",
-    "purescript-strongcheck": "^0.12.0",
-    "purescript-foldable-traversable": "^0.4.0"
+    "purescript-strongcheck": "^0.12.0"
   }
 }

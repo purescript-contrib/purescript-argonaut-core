@@ -1,11 +1,10 @@
 {
   "name": "purescript-argonaut-core",
-  "description": "Core of purescript-argonaut library, it provides basic types, folds and combinators for `Json`",
+  "description": "A fast, native representation for JSON, with serialization and folding",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-purescript": "^0.5.0",
-    "gulp-run": "^1.6.8",
-    "run-sequence": "^1.1.1"
+    "gulp-run": "^1.6.8"
   }
 }
