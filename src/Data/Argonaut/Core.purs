@@ -1,4 +1,4 @@
-module Data.Argonaut.Core 
+module Data.Argonaut.Core
   ( Json(..)
   , JNull(..)
   , JBoolean(..)
@@ -85,10 +85,10 @@ foldJsonObject :: forall a. a -> (JObject -> a) -> Json -> a
 foldJsonObject d f j = runFn7 _foldJson (const d) (const d) (const d) (const d) (const d) f j
 
 verbJsonType :: forall a b. b -> (a -> b) -> (b -> (a -> b) -> Json -> b) -> Json -> b
-verbJsonType def f fold = fold def f 
+verbJsonType def f fold = fold def f
 
 
--- Tests 
+-- Tests
 isJsonType :: forall a. (Boolean -> (a -> Boolean) -> Json -> Boolean) ->
               Json -> Boolean
 isJsonType = verbJsonType false (const true)
@@ -113,7 +113,7 @@ isObject = isJsonType foldJsonObject
 
 -- Decoding
 
-toJsonType :: forall a b. (Maybe a -> (a -> Maybe a) -> Json -> Maybe a) ->
+toJsonType :: forall a. (Maybe a -> (a -> Maybe a) -> Json -> Maybe a) ->
               Json -> Maybe a
 toJsonType = verbJsonType Nothing Just
 
@@ -189,7 +189,7 @@ instance ordJson :: Ord Json where
   compare a b = runFn5 _compare EQ GT LT a b
 
 instance showJson :: Show Json where
-  show = _stringify 
+  show = _stringify
 
 -- Foreigns
 
