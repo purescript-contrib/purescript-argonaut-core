@@ -44,7 +44,7 @@ module Data.Argonaut.Core
 
 import Prelude
 
-import Data.Tuple (Tuple(..))
+import Data.Tuple (Tuple())
 import Data.Maybe (Maybe(..))
 import Data.Function
 
