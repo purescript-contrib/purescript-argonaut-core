@@ -13,8 +13,6 @@ Core part of `purescript-argonaut` that contains basic types for `Json`, folds o
 bower install purescript-argonaut-core
 ```
 
-## Module documentation
+## Documentation
 
-- [Data.Argonaut.Core](docs/Data/Argonaut/Core.md)
-- [Data.Argonaut.Parser](docs/Data/Argonaut/Parser.md)
-- [Data.Argonaut.Printer](docs/Data/Argonaut/Printer.md)
+Module documentation is [published on Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core).
