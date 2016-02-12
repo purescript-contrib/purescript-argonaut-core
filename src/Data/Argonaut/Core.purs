@@ -42,13 +42,13 @@ module Data.Argonaut.Core
   , jsonSingletonObject
   ) where
 
-import Prelude
+import Prelude (class Show, class Ord, class Eq, Ordering(LT, GT, EQ), compare, (==), ($), const)
 
 import Data.Tuple (Tuple())
 import Data.Maybe (Maybe(..))
-import Data.Function
+import Data.Function (Fn5, Fn7, runFn5, runFn7)
 
-import qualified Data.StrMap as M
+import Data.StrMap as M
 
 type JBoolean = Boolean
 type JNumber = Number

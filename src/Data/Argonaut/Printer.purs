@@ -1,6 +1,6 @@
-module Data.Argonaut.Printer (Printer, printJson) where
+module Data.Argonaut.Printer (class Printer, printJson) where
 
-import Prelude
+import Prelude (show)
 import Data.Argonaut.Core (Json())
 
 class Printer a where
@@ -8,4 +8,3 @@ class Printer a where
 
 instance printerString :: Printer String where
   printJson = show
-       
