@@ -4,7 +4,8 @@
   "authors": [
     "Maxim Zimaliev <zimaliev@yandex.ru>",
     "Hardy Jones <>",
-    "John A. De Goes <john@degoes.net>"
+    "John A. De Goes <john@degoes.net>",
+    "Trevis Elser <trevis.elser@gmail.com>"
   ],
   "description": "Core of purescript-argonaut library, it provides basic types, folds and combinators for `Json`",
   "keywords": [
