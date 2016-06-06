@@ -47,11 +47,11 @@ module Data.Argonaut.Core
 
 import Prelude
 
-import Data.Tuple (Tuple())
+import Data.Tuple (Tuple)
 import Data.Maybe (Maybe(..))
-import Data.Function
+import Data.Function.Uncurried (Fn5, runFn5, Fn7, runFn7)
 
-import qualified Data.StrMap as M
+import Data.StrMap as M
 
 -- | A Boolean value inside some JSON data. Note that this type is exactly the
 -- | same as the primitive `Boolean` type; this synonym acts only to help
