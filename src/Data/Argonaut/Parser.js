@@ -1,5 +1,3 @@
-// module Data.Argonaut.Parser
-
 exports._jsonParser = function(fail, succ, s) {
     try {
         return succ(JSON.parse(s));

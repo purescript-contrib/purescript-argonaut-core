@@ -1,22 +1,21 @@
 module Test.Main where
 
 import Prelude
-
-import Control.Monad.Eff (Eff())
-import Control.Monad.Eff.Console (log)
-import Data.Maybe (Maybe(..))
-import Data.Maybe.Unsafe (fromJust)
+import Data.Array as A
+import Data.StrMap as M
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (CONSOLE, log)
+import Control.Monad.Eff.Exception (EXCEPTION)
+import Control.Monad.Eff.Random (RANDOM)
+import Data.Argonaut.Core (Json, JNull, toObject, toArray, toString, toNumber, toBoolean, toNull, fromObject, foldJsonObject, fromNumber, fromArray, foldJsonArray, fromString, foldJsonString, foldJsonNumber, fromBoolean, foldJsonBoolean, fromNull, foldJsonNull, foldJson, isObject, isArray, isString, isNumber, isBoolean, isNull)
+import Data.Argonaut.Parser (jsonParser)
+import Data.Argonaut.Printer (printJson)
 import Data.Either (isLeft, isRight, Either(..))
-import Data.Tuple (Tuple(..))
 import Data.Foldable (for_)
-import qualified Data.Array as A
-import qualified Data.StrMap as M
-
-import Data.Argonaut.Core
-import Data.Argonaut.Parser
-import Data.Argonaut.Printer
-
-import Test.StrongCheck (assert, (<?>), quickCheck, Result())
+import Data.Maybe (fromJust, Maybe(..))
+import Data.Tuple (Tuple(..))
+import Partial.Unsafe (unsafePartial)
+import Test.StrongCheck (assert, (<?>), quickCheck, Result)
 
 foreign import thisIsNull :: Json
 foreign import thisIsBoolean :: Json
@@ -26,7 +25,9 @@ foreign import thisIsArray :: Json
 foreign import thisIsObject :: Json
 foreign import nil :: JNull
 
-isTest :: Eff _ Unit
+type TestEff = Eff (console :: CONSOLE, random :: RANDOM, err :: EXCEPTION) Unit
+
+isTest :: TestEff
 isTest = do
   assert (isNull thisIsNull <?> "Error in null test")
   assert (isBoolean thisIsBoolean <?> "Error in boolean test")
@@ -35,7 +36,7 @@ isTest = do
   assert (isArray thisIsArray <?> "Error in array test")
   assert (isObject thisIsObject <?> "Error in object test")
 
-foldTest :: Eff _ Unit
+foldTest :: TestEff
 foldTest = do
   assert (foldFn thisIsNull == "null" <?> "Error in foldJson null")
   assert (foldFn thisIsBoolean == "boolean" <?> "Error in foldJson boolean")
@@ -55,7 +56,7 @@ foldFn = foldJson
          (const "object")
 
 cases :: Array Json
-cases = 
+cases =
   [ thisIsNull
   , thisIsBoolean
   , thisIsNumber
@@ -64,7 +65,7 @@ cases =
   , thisIsObject
   ]
 
-foldXXX :: Eff _ Unit
+foldXXX :: TestEff
 foldXXX = do
   assert ((foldJsonNull "not null" (const "null") <$> cases) ==
           ["null", "not null", "not null", "not null", "not null", "not null"] <?>
@@ -88,7 +89,7 @@ foldXXX = do
           "Error in foldJsonObject")
 
 
-fromTest :: Eff _ Unit
+fromTest :: TestEff
 fromTest = do
   assert ((foldJsonNull false (const true) (fromNull nil)) <?> "Error in fromNull")
   quickCheck (\bool -> foldJsonBoolean Nothing Just (fromBoolean bool) == Just bool <?> "Error in fromBoolean")
@@ -105,7 +106,7 @@ fromTest = do
                in (foldJsonObject Nothing Just (fromObject sm) == Just sm)
                   <?> "Error in fromObject")
 
-toTest :: Eff _ Unit
+toTest :: TestEff
 toTest = do
   assert (assertion toNull thisIsNull "Error in toNull")
   assert (assertion toBoolean thisIsBoolean "Error in toBoolean")
@@ -117,25 +118,25 @@ toTest = do
   assertion :: forall a. (Eq a) => (Json -> Maybe a) -> Json -> String -> Result
   assertion fn j msg =
     let forCases = A.catMaybes (fn <$> cases)
-        exact = A.singleton $ fromJust $ fn j
+        exact = A.singleton $ unsafePartial (fromJust $ fn j)
     in forCases == exact <?> msg
 
 
-parserTest :: Eff _ Unit
+parserTest :: TestEff
 parserTest = do
   assert ((isRight (jsonParser "{\"foo\": 1}")) <?> "Error in jsonParser")
   assert ((isLeft (jsonParser "\\\ffff")) <?> "Error in jsonParser")
 
-printJsonTest :: Eff _ Unit
+printJsonTest :: TestEff
 printJsonTest = do
   for_ cases (assert <<< assertion)
   where
   assertion :: Json -> Result
   assertion j = ((jsonParser (printJson j)) == Right j) <?> "Error in printJson"
 
-main :: Eff _ Unit
+main :: TestEff
 main = do
-  log "isXxx tests" 
+  log "isXxx tests"
   isTest
   log "foldJson tests"
   foldTest
@@ -147,5 +148,5 @@ main = do
   toTest
   log "jsonParser tests"
   parserTest
-  log "printJson tests" 
+  log "printJson tests"
   printJsonTest

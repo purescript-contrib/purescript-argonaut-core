@@ -1,9 +1,6 @@
-// module Data.Argonaut.Core
-
 function id(x) {
     return x;
 }
-    
 
 exports.fromNull = function() {
     return null;
@@ -75,7 +72,7 @@ function _compare(EQ, GT, LT, a, b) {
         if (isArray(b)) {
             for (var i = 0; i < Math.min(a.length, b.length); i++) {
                 var c = _compare(EQ, GT, LT, a[i], b[i]);
-                
+
                 if (c !== EQ) return c;
             }
             if (a.length === b.length) return EQ;
@@ -96,20 +93,20 @@ function _compare(EQ, GT, LT, a, b) {
         else {
             var akeys = keys(a);
             var bkeys = keys(b);
-            
+
             var keys = akeys.concat(bkeys).sort();
-            
+
             for (var i = 0; i < keys.length; i++) {
                 var k = keys[i];
-                
+
                 if (a[k] === undefined) return LT;
                 else if (b[k] === undefined) return GT;
-                
+
                 var c = _compare(EQ, GT, LT, a[k], b[k]);
-                
+
                 if (c !== EQ) return c;
             }
-            
+
             if (akeys.length === bkeys.length) return EQ;
             else if (akeys.length < bkeys.length) return LT;
             else return GT;

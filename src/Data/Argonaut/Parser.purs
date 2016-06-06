@@ -1,7 +1,7 @@
 module Data.Argonaut.Parser (jsonParser) where
 
-import Data.Argonaut.Core (Json())
-import Data.Function (Fn3(), runFn3)
+import Data.Argonaut.Core (Json)
+import Data.Function.Uncurried (Fn3, runFn3)
 import Data.Either (Either(..))
 
 foreign import _jsonParser :: forall a. Fn3 (String -> a) (Json -> a) String a
