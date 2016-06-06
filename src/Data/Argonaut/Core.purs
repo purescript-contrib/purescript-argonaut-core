@@ -43,12 +43,10 @@ module Data.Argonaut.Core
   ) where
 
 import Prelude
-
-import Data.Tuple (Tuple())
+import Data.StrMap as M
+import Data.Function.Uncurried (Fn5, Fn7, runFn5, runFn7)
 import Data.Maybe (Maybe(..))
-import Data.Function
-
-import qualified Data.StrMap as M
+import Data.Tuple (Tuple)
 
 type JBoolean = Boolean
 type JNumber = Number

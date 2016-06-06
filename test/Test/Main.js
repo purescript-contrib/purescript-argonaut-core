@@ -1,5 +1,3 @@
-// module Test.Main
-
 exports.thisIsNull = null;
 exports.thisIsBoolean = true;
 exports.thisIsNumber = 12;
