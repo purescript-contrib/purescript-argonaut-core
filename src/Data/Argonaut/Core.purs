@@ -1,3 +1,6 @@
+-- | This module defines a data type and various functions for creating and
+-- | manipulating JSON values. The README contains additional documentation
+-- | for this module.
 module Data.Argonaut.Core
   ( Json(..)
   , JNull(..)
@@ -50,37 +53,73 @@ import Data.Function
 
 import qualified Data.StrMap as M
 
+-- | A Boolean value inside some JSON data. Note that this type is exactly the
+-- | same as the primitive `Boolean` type; this synonym acts only to help
+-- | indicate intent.
 type JBoolean = Boolean
+
+-- | A Number value inside some JSON data. Note that this type is exactly the
+-- | same as the primitive `Number` type; this synonym acts only to help
+-- | indicate intent.
 type JNumber = Number
+
+-- | A String value inside some JSON data. Note that this type is exactly the
+-- | same as the primitive `String` type; this synonym acts only to help
+-- | indicate intent.
 type JString = String
-type JAssoc = Tuple String Json
+
+-- | A JSON array; an array containing `Json` values.
 type JArray = Array Json
+
+-- | A JSON object; a JavaScript object containing `Json` values.
 type JObject = M.StrMap Json
 
+type JAssoc = Tuple String Json
+
+-- | The type of null values inside JSON data. There is exactly one value of
+-- | this type: in JavaScript, it is written `null`. This module exports this
+-- | value as `jsonNull`.
 foreign import data JNull :: *
+
+-- | The type of JSON data. The underlying representation is the same as what
+-- | would be returned from JavaScript's `JSON.stringify` function; that is,
+-- | ordinary JavaScript booleans, strings, arrays, objects, etc.
 foreign import data Json :: *
 
+-- | Case analysis for `Json` values. See the README for more information.
 foldJson :: forall a.
             (JNull -> a) -> (JBoolean -> a) -> (JNumber -> a) ->
             (JString -> a) -> (JArray -> a) -> (JObject -> a) ->
             Json -> a
 foldJson a b c d e f json = runFn7 _foldJson a b c d e f json
 
+-- | A simpler version of `foldJson` which accepts a callback for when the
+-- | `Json` argument was null, and a default value for all other cases.
 foldJsonNull :: forall a. a -> (JNull -> a) -> Json -> a
 foldJsonNull d f j = runFn7 _foldJson f (const d) (const d) (const d) (const d) (const d) j
 
+-- | A simpler version of `foldJson` which accepts a callback for when the
+-- | `Json` argument was a `Boolean`, and a default value for all other cases.
 foldJsonBoolean :: forall a. a -> (JBoolean -> a) -> Json -> a
 foldJsonBoolean d f j = runFn7 _foldJson (const d) f (const d) (const d) (const d) (const d) j
 
+-- | A simpler version of `foldJson` which accepts a callback for when the
+-- | `Json` argument was a `Number`, and a default value for all other cases.
 foldJsonNumber :: forall a. a -> (JNumber -> a) -> Json -> a
 foldJsonNumber d f j = runFn7 _foldJson (const d) (const d) f (const d) (const d) (const d) j
 
+-- | A simpler version of `foldJson` which accepts a callback for when the
+-- | `Json` argument was a `String`, and a default value for all other cases.
 foldJsonString :: forall a. a -> (JString -> a) -> Json -> a
 foldJsonString d f j = runFn7 _foldJson (const d) (const d) (const d) f (const d) (const d) j
 
+-- | A simpler version of `foldJson` which accepts a callback for when the
+-- | `Json` argument was a `JArray`, and a default value for all other cases.
 foldJsonArray :: forall a. a -> (JArray -> a) -> Json -> a
 foldJsonArray d f j = runFn7 _foldJson (const d) (const d) (const d) (const d) f (const d) j
 
+-- | A simpler version of `foldJson` which accepts a callback for when the
+-- | `Json` argument was a `JObject`, and a default value for all other cases.
 foldJsonObject :: forall a. a -> (JObject -> a) -> Json -> a
 foldJsonObject d f j = runFn7 _foldJson (const d) (const d) (const d) (const d) (const d) f j
 
