@@ -17,7 +17,7 @@ exports.fromObject = id;
 
 exports.jsonNull = null;
 
-exports._stringify = function(j) {
+exports.stringify = function(j) {
     return JSON.stringify(j);
 };
 
