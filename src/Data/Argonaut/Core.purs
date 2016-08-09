@@ -43,6 +43,7 @@ module Data.Argonaut.Core
   , jsonSingletonArray
   , jsonEmptyObject
   , jsonSingletonObject
+  , stringify
   ) where
 
 import Prelude
@@ -228,11 +229,11 @@ instance ordJson :: Ord Json where
   compare a b = runFn5 _compare EQ GT LT a b
 
 instance showJson :: Show Json where
-  show = _stringify
+  show = stringify
 
 -- Foreigns
 
-foreign import _stringify :: Json -> String
+foreign import stringify :: Json -> String
 foreign import _foldJson :: forall z. Fn7 (JNull -> z) (JBoolean -> z)
                             (JNumber -> z) (JString -> z) (JArray -> z)
                             (JObject -> z) Json z
