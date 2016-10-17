@@ -88,10 +88,15 @@ foreign import data JNull :: *
 foreign import data Json :: *
 
 -- | Case analysis for `Json` values. See the README for more information.
-foldJson :: forall a.
-            (JNull -> a) -> (JBoolean -> a) -> (JNumber -> a) ->
-            (JString -> a) -> (JArray -> a) -> (JObject -> a) ->
-            Json -> a
+foldJson
+  :: forall a
+   . (JNull -> a)
+  -> (JBoolean -> a)
+  -> (JNumber -> a)
+  -> (JString -> a)
+  -> (JArray -> a)
+  -> (JObject -> a)
+  -> Json -> a
 foldJson a b c d e f json = runFn7 _foldJson a b c d e f json
 
 -- | A simpler version of `foldJson` which accepts a callback for when the
@@ -153,8 +158,11 @@ isObject = isJsonType foldJsonObject
 
 -- Decoding
 
-toJsonType :: forall a. (Maybe a -> (a -> Maybe a) -> Json -> Maybe a) ->
-              Json -> Maybe a
+toJsonType
+  :: forall a
+   . (Maybe a -> (a -> Maybe a) -> Json -> Maybe a)
+  -> Json
+  -> Maybe a
 toJsonType = verbJsonType Nothing Just
 
 toNull :: Json -> Maybe JNull
@@ -190,6 +198,7 @@ foreign import jsonNull :: Json
 
 jsonTrue :: Json
 jsonTrue = fromBoolean true
+
 jsonFalse :: Json
 jsonFalse = fromBoolean false
 
@@ -223,7 +232,7 @@ instance showJNull :: Show JNull where
   show _ = "null"
 
 instance eqJson :: Eq Json where
-  eq j1 j2 = (compare j1 j2) == EQ
+  eq j1 j2 = compare j1 j2 == EQ
 
 instance ordJson :: Ord Json where
   compare a b = runFn5 _compare EQ GT LT a b
@@ -231,10 +240,18 @@ instance ordJson :: Ord Json where
 instance showJson :: Show Json where
   show = stringify
 
--- Foreigns
-
 foreign import stringify :: Json -> String
-foreign import _foldJson :: forall z. Fn7 (JNull -> z) (JBoolean -> z)
-                            (JNumber -> z) (JString -> z) (JArray -> z)
-                            (JObject -> z) Json z
+
+foreign import _foldJson
+  :: forall z
+   . Fn7
+      (JNull -> z)
+      (JBoolean -> z)
+      (JNumber -> z)
+      (JString -> z)
+      (JArray -> z)
+      (JObject -> z)
+      Json
+      z
+
 foreign import _compare :: Fn5 Ordering Ordering Ordering Json Json Ordering
