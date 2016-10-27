@@ -37,7 +37,7 @@ exports._foldJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
   else return isObj(j);
 };
 
-function _compare(EQ, GT, LT, a, b) {
+exports._compare = function _compare (EQ, GT, LT, a, b) {
   if (a == null) {
     if (b == null) return EQ;
     else return LT;
@@ -102,6 +102,4 @@ function _compare(EQ, GT, LT, a, b) {
       return EQ;
     }
   }
-}
-
-exports._compare = _compare;
+};
