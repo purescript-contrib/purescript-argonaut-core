@@ -83,7 +83,7 @@ type JAssoc = Tuple String Json
 foreign import data JNull :: *
 
 -- | The type of JSON data. The underlying representation is the same as what
--- | would be returned from JavaScript's `JSON.stringify` function; that is,
+-- | would be returned from JavaScript's `JSON.parse` function; that is,
 -- | ordinary JavaScript booleans, strings, arrays, objects, etc.
 foreign import data Json :: *
 
