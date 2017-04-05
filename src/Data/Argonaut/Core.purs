@@ -2,14 +2,14 @@
 -- | manipulating JSON values. The README contains additional documentation
 -- | for this module.
 module Data.Argonaut.Core
-  ( Json(..)
-  , JNull(..)
-  , JBoolean(..)
-  , JNumber(..)
-  , JString(..)
-  , JAssoc(..)
-  , JArray(..)
-  , JObject(..)
+  ( Json
+  , JNull
+  , JBoolean
+  , JNumber
+  , JString
+  , JAssoc
+  , JArray
+  , JObject
   , foldJson
   , foldJsonNull
   , foldJsonBoolean
@@ -36,9 +36,10 @@ module Data.Argonaut.Core
   , toArray
   , toObject
   , jsonNull
-  , jsonFalse
   , jsonTrue
+  , jsonFalse
   , jsonZero
+  , jsonEmptyString
   , jsonEmptyArray
   , jsonSingletonArray
   , jsonEmptyObject
