@@ -4,19 +4,21 @@ import Prelude
 
 import Control.Monad.Eff.Console (log)
 
-import Data.Argonaut.Core (Json, JNull, toObject, toArray, toString, toNumber, toBoolean, toNull, fromObject, foldJsonObject, fromNumber, fromArray, foldJsonArray, fromString, foldJsonString, foldJsonNumber, fromBoolean, foldJsonBoolean, fromNull, foldJsonNull, foldJson, isObject, isArray, isString, isNumber, isBoolean, isNull)
+import Data.Argonaut.Core (Json, JNull, toObject, toArray, toString, toNumber, toBoolean, toNull, fromObject, foldJsonObject, fromNumber, fromArray, foldJsonArray, fromString, foldJsonString, foldJsonNumber, fromBoolean, foldJsonBoolean, fromNull, foldJsonNull, foldJson, isObject, isArray, isString, isNumber, isBoolean, isNull, stringify)
 import Data.Argonaut.Parser (jsonParser)
-import Data.Argonaut.Printer (printJson)
+import Data.Argonaut.Gen (genJson)
 import Data.Array as A
-import Data.Either (isLeft, isRight, Either(..))
-import Data.Foldable (for_)
+import Data.Either (isLeft, Either(..))
 import Data.Maybe (Maybe(..), fromJust)
 import Data.StrMap as M
 import Data.Tuple (Tuple(..))
 
+import Control.Monad.Gen as Gen
+
 import Partial.Unsafe (unsafePartial)
 
-import Test.StrongCheck (SC, assert, (<?>), quickCheck, Result())
+import Test.StrongCheck (SC, (===), (<?>), assert, quickCheck, quickCheck', Result)
+import Test.StrongCheck.Gen (Gen)
 
 foreign import thisIsNull :: Json
 foreign import thisIsBoolean :: Json
@@ -122,15 +124,13 @@ toTest = do
 
 parserTest :: SC () Unit
 parserTest = do
-  assert ((isRight (jsonParser "{\"foo\": 1}")) <?> "Error in jsonParser")
   assert ((isLeft (jsonParser "\\\ffff")) <?> "Error in jsonParser")
-
-printJsonTest :: SC () Unit
-printJsonTest = do
-  for_ cases (assert <<< assertion)
+  quickCheck' 10 roundtripTest
   where
-  assertion :: Json -> Result
-  assertion j = ((jsonParser (printJson j)) == Right j) <?> "Error in printJson"
+  roundtripTest :: Gen Result
+  roundtripTest = do
+    json <- Gen.resize (const 5) genJson
+    pure $ jsonParser (stringify json) === Right json
 
 main :: SC () Unit
 main = do
@@ -146,5 +146,3 @@ main = do
   toTest
   log "jsonParser tests"
   parserTest
-  log "printJson tests"
-  printJsonTest

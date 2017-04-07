@@ -2,14 +2,14 @@
 -- | manipulating JSON values. The README contains additional documentation
 -- | for this module.
 module Data.Argonaut.Core
-  ( Json(..)
-  , JNull(..)
-  , JBoolean(..)
-  , JNumber(..)
-  , JString(..)
-  , JAssoc(..)
-  , JArray(..)
-  , JObject(..)
+  ( Json
+  , JNull
+  , JBoolean
+  , JNumber
+  , JString
+  , JAssoc
+  , JArray
+  , JObject
   , foldJson
   , foldJsonNull
   , foldJsonBoolean
@@ -36,9 +36,10 @@ module Data.Argonaut.Core
   , toArray
   , toObject
   , jsonNull
-  , jsonFalse
   , jsonTrue
+  , jsonFalse
   , jsonZero
+  , jsonEmptyString
   , jsonEmptyArray
   , jsonSingletonArray
   , jsonEmptyObject
@@ -80,12 +81,12 @@ type JAssoc = Tuple String Json
 -- | The type of null values inside JSON data. There is exactly one value of
 -- | this type: in JavaScript, it is written `null`. This module exports this
 -- | value as `jsonNull`.
-foreign import data JNull :: *
+foreign import data JNull :: Type
 
 -- | The type of JSON data. The underlying representation is the same as what
 -- | would be returned from JavaScript's `JSON.parse` function; that is,
 -- | ordinary JavaScript booleans, strings, arrays, objects, etc.
-foreign import data Json :: *
+foreign import data Json :: Type
 
 -- | Case analysis for `Json` values. See the README for more information.
 foldJson
