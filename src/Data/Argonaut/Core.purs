@@ -35,6 +35,7 @@ module Data.Argonaut.Core
   , toString
   , toArray
   , toObject
+  , jNull
   , jsonNull
   , jsonTrue
   , jsonFalse
@@ -49,11 +50,12 @@ module Data.Argonaut.Core
 
 import Prelude
 
-import Data.Tuple (Tuple)
-import Data.Maybe (Maybe(..))
 import Data.Function.Uncurried (Fn5, runFn5, Fn7, runFn7)
-
+import Data.Maybe (Maybe(..))
 import Data.StrMap as M
+import Data.Tuple (Tuple)
+
+import Unsafe.Coerce (unsafeCoerce)
 
 -- | A Boolean value inside some JSON data. Note that this type is exactly the
 -- | same as the primitive `Boolean` type; this synonym acts only to help
@@ -194,6 +196,9 @@ foreign import fromArray :: JArray -> Json
 foreign import fromObject  :: JObject -> Json
 
 -- Defaults
+
+jNull :: JNull
+jNull = (unsafeCoerce :: Json -> JNull) jsonNull
 
 foreign import jsonNull :: Json
 
