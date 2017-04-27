@@ -69,7 +69,7 @@ Argonaut defines a type `JNull` as the type of the `null` value in JavaScript.
 (Or, where do `Json` values come from?)
 
 If your program is receiving JSON data as a string, you probably want the
-`parseJson` function in `Data.Argonaut.Parser`, which is a very simple wrapper
+`jsonParser` function in `Data.Argonaut.Parser`, which is a very simple wrapper
 around JavaScript's `JSON.parse`.
 
 Otherwise, `Json` values can be introduced into your program via the FFI or via
