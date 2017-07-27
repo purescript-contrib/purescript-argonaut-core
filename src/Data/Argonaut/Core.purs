@@ -46,6 +46,7 @@ module Data.Argonaut.Core
   , jsonEmptyObject
   , jsonSingletonObject
   , stringify
+  , stringifyWithSpace
   ) where
 
 import Prelude
@@ -247,6 +248,7 @@ instance showJson :: Show Json where
   show = stringify
 
 foreign import stringify :: Json -> String
+foreign import stringifyWithSpace :: String -> Json -> String
 
 foreign import _foldJson
   :: forall z
