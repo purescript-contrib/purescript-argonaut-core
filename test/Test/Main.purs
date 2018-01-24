@@ -17,8 +17,8 @@ import Control.Monad.Gen as Gen
 
 import Partial.Unsafe (unsafePartial)
 
-import Test.StrongCheck (SC, (===), (<?>), assert, quickCheck, quickCheck', Result)
-import Test.StrongCheck.Gen (Gen)
+import Test.QuickCheck (class Testable, QC, Result, quickCheck, quickCheck', (<?>), (===))
+import Test.QuickCheck.Gen (Gen)
 
 foreign import thisIsNull :: Json
 foreign import thisIsBoolean :: Json
@@ -28,7 +28,7 @@ foreign import thisIsArray :: Json
 foreign import thisIsObject :: Json
 foreign import nil :: JNull
 
-isTest :: SC () Unit
+isTest :: QC () Unit
 isTest = do
   assert (isNull thisIsNull <?> "Error in null test")
   assert (isBoolean thisIsBoolean <?> "Error in boolean test")
@@ -37,7 +37,7 @@ isTest = do
   assert (isArray thisIsArray <?> "Error in array test")
   assert (isObject thisIsObject <?> "Error in object test")
 
-foldTest :: SC () Unit
+foldTest :: QC () Unit
 foldTest = do
   assert (foldFn thisIsNull == "null" <?> "Error in foldJson null")
   assert (foldFn thisIsBoolean == "boolean" <?> "Error in foldJson boolean")
@@ -65,7 +65,7 @@ cases =
   , thisIsObject
   ]
 
-foldXXX :: SC () Unit
+foldXXX :: QC () Unit
 foldXXX = do
   assert ((foldJsonNull "not null" (const "null") <$> cases) ==
           ["null", "not null", "not null", "not null", "not null", "not null"] <?>
@@ -89,7 +89,7 @@ foldXXX = do
           "Error in foldJsonObject")
 
 
-fromTest :: SC () Unit
+fromTest :: QC () Unit
 fromTest = do
   assert ((foldJsonNull false (const true) (fromNull nil)) <?> "Error in fromNull")
   quickCheck (\bool -> foldJsonBoolean Nothing Just (fromBoolean bool) == Just bool <?> "Error in fromBoolean")
@@ -106,7 +106,7 @@ fromTest = do
                in (foldJsonObject Nothing Just (fromObject sm) == Just sm)
                   <?> "Error in fromObject")
 
-toTest :: SC () Unit
+toTest :: QC () Unit
 toTest = do
   assert (assertion toNull thisIsNull "Error in toNull")
   assert (assertion toBoolean thisIsBoolean "Error in toBoolean")
@@ -122,7 +122,7 @@ toTest = do
     in forCases == exact <?> msg
 
 
-parserTest :: SC () Unit
+parserTest :: QC () Unit
 parserTest = do
   assert ((isLeft (jsonParser "\\\ffff")) <?> "Error in jsonParser")
   quickCheck' 10 roundtripTest
@@ -132,7 +132,10 @@ parserTest = do
     json <- Gen.resize (const 5) genJson
     pure $ jsonParser (stringify json) === Right json
 
-main :: SC () Unit
+assert :: forall eff prop. Testable prop => prop -> QC eff Unit
+assert = quickCheck' 1
+
+main :: QC () Unit
 main = do
   log "isXxx tests"
   isTest

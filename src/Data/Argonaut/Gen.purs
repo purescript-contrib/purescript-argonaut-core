@@ -15,7 +15,7 @@ import Data.String as S
 import Data.StrMap as SM
 
 genJson :: forall m. MonadGen m => MonadRec m => Lazy (m J.Json) => m J.Json
-genJson = Gen.resize (min 10) $ Gen.sized genJson'
+genJson = Gen.resize (min 5) $ Gen.sized genJson'
   where
   genJson' :: Int -> m J.Json
   genJson' size
@@ -23,7 +23,7 @@ genJson = Gen.resize (min 10) $ Gen.sized genJson'
     | otherwise = genLeaf
 
   genLeaf :: m J.Json
-  genLeaf = Gen.oneOf $ pure J.jsonNull :| [ genJBoolean, genJNumber, genJString]
+  genLeaf = Gen.oneOf $ pure J.jsonNull :| [genJBoolean, genJNumber, genJString]
 
   genJArray :: m J.Json
   genJArray = J.fromArray <$> Gen.unfoldable (defer \_ -> genJson)
