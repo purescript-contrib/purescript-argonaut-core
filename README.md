@@ -31,7 +31,7 @@ data Json
   | JNumber Number
   | JBoolean Boolean
   | JArray (Array Json)
-  | JObject (StrMap Json)
+  | JObject (Object Json)
 ```
 
 And indeed, some might even say this is the obvious approach.
@@ -44,25 +44,6 @@ needed before you can start operating on it. This ought to help your program
 both in terms of speed and memory churn.
 
 Much of the design of Argonaut follows naturally from this design decision.
-
-### Types
-
-The most important type in this library is, of course, `Json`, which is the
-type of JSON data in its native JavaScript representation.
-
-As the (hypothetical) algebraic data type declaration above indicates, there
-are six possibilities for a JSON value: it can be `null`, a string, a number, a
-boolean, an array of JSON values, or an object mapping string keys to JSON
-values.
-
-For convenience, and to ensure that values have the appropriate underlying
-data representations, Argonaut also declares types for each of these individual
-possibilities, whose names correspond to the data constructor names above.
-
-Therefore, `JString`, `JNumber`, and `JBoolean` are synonyms for the primitive
-PureScript types `String`, `Number`, and `Boolean` respectively; `JArray` is a
-synonym for `Array Json`; and `JObject` is a synonym for `StrMap Json`.
-Argonaut defines a type `JNull` as the type of the `null` value in JavaScript.
 
 ### Introducing Json values
 
@@ -97,7 +78,7 @@ follows:
 
 ```purescript
 import Data.Tuple (Tuple(..))
-import Data.StrMap as StrMap
+import Foreign.Object as StrMap
 import Data.Argonaut.Core as A
 
 someNumber = A.fromNumber 23.6
@@ -122,10 +103,16 @@ expression instead.
 The type of `foldJson` is:
 
 ```purescript
-foldJson :: forall a.
-            (JNull -> a) -> (JBoolean -> a) -> (JNumber -> a) ->
-            (JString -> a) -> (JArray -> a) -> (JObject -> a) ->
-            Json -> a
+foldJson
+  :: forall a
+   . (Unit -> a)
+  -> (Boolean -> a)
+  -> (Number -> a)
+  -> (String -> a)
+  -> (Array Json -> a)
+  -> (Object Json -> a)
+  -> Json
+  -> a
 ```
 
 That is, `foldJson` takes six functions, which all must return values of some
@@ -133,9 +120,12 @@ particular type `a`, together with one `Json` value. `foldJson` itself also
 returns a value of the same type `a`.
 
 A use of `foldJson` is very similar to a `case ... of` expression, as it allows
-you to handle each of the six possibilities for the `Json` value you passed in.
-Thinking of it this way, each of the six function arguments is like one of the
-case alternatives. Just like in a `case ... of` expression, the final value
+you to handle each of the six possibilities for the `Json` value you passed in. Thinking of it this way, each of the six function arguments is like one of the
+case alternatives.
+
+The function that takes `Unit` as an argument is for matching `null` values. As there is only one possible `null` value, we use the PureScript `Unit` type, as correspondingly there is only one possible `Unit` value.
+
+Just like in a `case ... of` expression, the final value
 that the whole expression evaluates to comes from evaluating exactly one of the
 'alternatives' (functions) that you pass in. In fact, you can tell that this
 is the case just by looking at the type signature of `foldJson`, because of a
@@ -168,7 +158,7 @@ basicInfo = foldJson
            " characters long.")
   (\xs -> "Got an array, which had " <> Data.Array.length xs <>
            " items.")
-  (\obj -> "Got an object, which had " <> Data.StrMap.size obj <>
+  (\obj -> "Got an object, which had " <> Foreign.Object.size obj <>
            " items.")
 ```
 
@@ -189,7 +179,7 @@ For example, we can write a function which tests whether a JSON value is the
 string "lol" like this:
 
 ```purescript
-foldJsonString :: forall a. a -> (JString -> a) -> Json -> a
+foldJsonString :: forall a. a -> (String -> a) -> Json -> a
 
 isJsonLol = foldJsonString false (_ == "lol")
 ```
@@ -203,7 +193,7 @@ type, you'll get a `Just` value. Otherwise, you'll get `Nothing`. For example,
 we could have written `isJsonLol` like this, too:
 
 ```purescript
-toString :: Json -> Maybe JString
+toString :: Json -> Maybe String
 
 isJsonLol json =
   case toString json of

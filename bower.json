@@ -27,12 +27,12 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-enums": "^3.0.0",
-    "purescript-functions": "^3.0.0",
-    "purescript-gen": "^1.0.0",
-    "purescript-maps": "^3.0.0"
+    "purescript-enums": "#compiler/0.12",
+    "purescript-functions": "#compiler/0.12",
+    "purescript-gen": "#compiler/0.12",
+    "purescript-foreign-object": "#compiler/0.12"
   },
   "devDependencies": {
-    "purescript-quickcheck": "^4.6.1"
+    "purescript-quickcheck": "#compiler/0.12"
   }
 }

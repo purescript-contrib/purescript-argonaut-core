@@ -6,13 +6,12 @@ import Control.Lazy (class Lazy, defer)
 import Control.Monad.Gen (class MonadGen)
 import Control.Monad.Gen as Gen
 import Control.Monad.Rec.Class (class MonadRec)
-
 import Data.Argonaut.Core as J
 import Data.Array as A
 import Data.Char as C
 import Data.NonEmpty ((:|))
 import Data.String as S
-import Data.StrMap as SM
+import Foreign.Object as Obj
 
 genJson :: forall m. MonadGen m => MonadRec m => Lazy (m J.Json) => m J.Json
 genJson = Gen.resize (min 5) $ Gen.sized genJson'
@@ -37,7 +36,7 @@ genJson = Gen.resize (min 5) $ Gen.sized genJson'
     pure $
       J.foldJsonObject
         (J.jsonSingletonObject k v)
-        (J.fromObject <<< SM.insert k v)
+        (J.fromObject <<< Obj.insert k v)
         obj
 
   genJBoolean :: m J.Json

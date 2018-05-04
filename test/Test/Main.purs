@@ -2,22 +2,19 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Eff.Console (log)
-
-import Data.Argonaut.Core (Json, JNull, toObject, toArray, toString, toNumber, toBoolean, toNull, fromObject, foldJsonObject, fromNumber, fromArray, foldJsonArray, fromString, foldJsonString, foldJsonNumber, fromBoolean, foldJsonBoolean, fromNull, foldJsonNull, foldJson, isObject, isArray, isString, isNumber, isBoolean, isNull, stringify)
-import Data.Argonaut.Parser (jsonParser)
+import Control.Monad.Gen as Gen
+import Data.Argonaut.Core (Json, foldJson, foldJsonArray, foldJsonBoolean, foldJsonNull, foldJsonNumber, foldJsonObject, foldJsonString, fromArray, fromBoolean, fromNumber, fromObject, fromString, isArray, isBoolean, isNull, isNumber, isObject, isString, jsonNull, stringify, toArray, toBoolean, toNull, toNumber, toObject, toString)
 import Data.Argonaut.Gen (genJson)
+import Data.Argonaut.Parser (jsonParser)
 import Data.Array as A
 import Data.Either (isLeft, Either(..))
 import Data.Maybe (Maybe(..), fromJust)
-import Data.StrMap as M
 import Data.Tuple (Tuple(..))
-
-import Control.Monad.Gen as Gen
-
+import Effect (Effect)
+import Effect.Console (log)
+import Foreign.Object as Obj
 import Partial.Unsafe (unsafePartial)
-
-import Test.QuickCheck (class Testable, QC, Result, quickCheck, quickCheck', (<?>), (===))
+import Test.QuickCheck (class Testable, Result, quickCheck, quickCheck', (<?>))
 import Test.QuickCheck.Gen (Gen)
 
 foreign import thisIsNull :: Json
@@ -26,9 +23,8 @@ foreign import thisIsNumber :: Json
 foreign import thisIsString :: Json
 foreign import thisIsArray :: Json
 foreign import thisIsObject :: Json
-foreign import nil :: JNull
 
-isTest :: QC () Unit
+isTest :: Effect Unit
 isTest = do
   assert (isNull thisIsNull <?> "Error in null test")
   assert (isBoolean thisIsBoolean <?> "Error in boolean test")
@@ -37,7 +33,7 @@ isTest = do
   assert (isArray thisIsArray <?> "Error in array test")
   assert (isObject thisIsObject <?> "Error in object test")
 
-foldTest :: QC () Unit
+foldTest :: Effect Unit
 foldTest = do
   assert (foldFn thisIsNull == "null" <?> "Error in foldJson null")
   assert (foldFn thisIsBoolean == "boolean" <?> "Error in foldJson boolean")
@@ -65,7 +61,7 @@ cases =
   , thisIsObject
   ]
 
-foldXXX :: QC () Unit
+foldXXX :: Effect Unit
 foldXXX = do
   assert ((foldJsonNull "not null" (const "null") <$> cases) ==
           ["null", "not null", "not null", "not null", "not null", "not null"] <?>
@@ -89,9 +85,9 @@ foldXXX = do
           "Error in foldJsonObject")
 
 
-fromTest :: QC () Unit
+fromTest :: Effect Unit
 fromTest = do
-  assert ((foldJsonNull false (const true) (fromNull nil)) <?> "Error in fromNull")
+  assert ((foldJsonNull false (const true) jsonNull) <?> "Error in fromNull")
   quickCheck (\bool -> foldJsonBoolean Nothing Just (fromBoolean bool) == Just bool <?> "Error in fromBoolean")
   quickCheck (\num -> foldJsonNumber Nothing Just (fromNumber num) == Just num <?> "Error in fromNumber")
   quickCheck (\str -> foldJsonString Nothing Just (fromString str) == Just str <?> "Error in fromString")
@@ -101,12 +97,12 @@ fromTest = do
                in (foldJsonArray Nothing  Just (fromArray arr) == Just arr)
                   <?> "Error in fromArray")
   quickCheck (\(Tuple str num) ->
-               let sm :: M.StrMap Json
-                   sm = M.singleton str (fromNumber num)
+               let sm :: Obj.Object Json
+                   sm = Obj.singleton str (fromNumber num)
                in (foldJsonObject Nothing Just (fromObject sm) == Just sm)
                   <?> "Error in fromObject")
 
-toTest :: QC () Unit
+toTest :: Effect Unit
 toTest = do
   assert (assertion toNull thisIsNull "Error in toNull")
   assert (assertion toBoolean thisIsBoolean "Error in toBoolean")
@@ -122,7 +118,7 @@ toTest = do
     in forCases == exact <?> msg
 
 
-parserTest :: QC () Unit
+parserTest :: Effect Unit
 parserTest = do
   assert ((isLeft (jsonParser "\\\ffff")) <?> "Error in jsonParser")
   quickCheck' 10 roundtripTest
@@ -130,12 +126,13 @@ parserTest = do
   roundtripTest :: Gen Result
   roundtripTest = do
     json <- Gen.resize (const 5) genJson
-    pure $ jsonParser (stringify json) === Right json
+    let parsed = jsonParser (stringify json)
+    pure $ parsed == Right json <?> show (stringify <$> parsed) <> " /= " <> stringify json 
 
-assert :: forall eff prop. Testable prop => prop -> QC eff Unit
+assert :: forall prop. Testable prop => prop -> Effect Unit
 assert = quickCheck' 1
 
-main :: QC () Unit
+main :: Effect Unit
 main = do
   log "isXxx tests"
   isTest

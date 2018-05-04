@@ -4,10 +4,6 @@ function id(x) {
   return x;
 }
 
-exports.fromNull = function () {
-  return null;
-};
-
 exports.fromBoolean = id;
 exports.fromNumber = id;
 exports.fromString = id;
@@ -28,7 +24,7 @@ function isArray(a) {
 }
 
 exports._foldJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
-  if (j == null) return isNull(null);
+  if (j == null) return isNull();
   else if (typeof j === "boolean") return isBool(j);
   else if (typeof j === "number") return isNum(j);
   else if (typeof j === "string") return isStr(j);
