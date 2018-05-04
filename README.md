@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/purescript-contrib/purescript-argonaut-core.svg?branch=master)](https://travis-ci.org/purescript-contrib/purescript-argonaut-core)
 [![Maintainer: slamdata](https://img.shields.io/badge/maintainer-slamdata-lightgrey.svg)](http://github.com/slamdata)
 
-Core part of `purescript-argonaut` that contains basic types for `Json`, folds over them, tests, printer and parser.
+Core part of `purescript-argonaut` that contains basic types for `Json`, case analysis, printer and parser.
 
 ## Installation
 
@@ -94,16 +94,16 @@ someObject = A.fromObject (StrMap.fromFoldable [
 
 ### Eliminating/matching on `Json` values
 
-We can perform case analysis for `Json` values using the `foldJson` function.
+We can perform case analysis for `Json` values using the `caseJson` function.
 This function is necessary because `Json` is not an algebraic data type. If
 `Json` were an algebraic data type, we would not have as much need for this
 function, because we could perform pattern matching with a `case ... of`
 expression instead.
 
-The type of `foldJson` is:
+The type of `caseJson` is:
 
 ```purescript
-foldJson
+caseJson
   :: forall a
    . (Unit -> a)
   -> (Boolean -> a)
@@ -115,11 +115,11 @@ foldJson
   -> a
 ```
 
-That is, `foldJson` takes six functions, which all must return values of some
-particular type `a`, together with one `Json` value. `foldJson` itself also
+That is, `caseJson` takes six functions, which all must return values of some
+particular type `a`, together with one `Json` value. `caseJson` itself also
 returns a value of the same type `a`.
 
-A use of `foldJson` is very similar to a `case ... of` expression, as it allows
+A use of `caseJson` is very similar to a `case ... of` expression, as it allows
 you to handle each of the six possibilities for the `Json` value you passed in. Thinking of it this way, each of the six function arguments is like one of the
 case alternatives.
 
@@ -128,7 +128,7 @@ The function that takes `Unit` as an argument is for matching `null` values. As 
 Just like in a `case ... of` expression, the final value
 that the whole expression evaluates to comes from evaluating exactly one of the
 'alternatives' (functions) that you pass in. In fact, you can tell that this
-is the case just by looking at the type signature of `foldJson`, because of a
+is the case just by looking at the type signature of `caseJson`, because of a
 property called *parametricity* (although a deeper explanation of parametricity
 is outside the scope of this tutorial).
 
@@ -141,7 +141,7 @@ exports.anotherArray = [0.0, {foo: 'bar'}, false];
 exports.anotherObject = {foo: 1, bar: [2,2]};
 ```
 
-Then we can match on them in PureScript using `foldJson`:
+Then we can match on them in PureScript using `caseJson`:
 
 ```purescript
 foreign import anotherNumber :: Json
@@ -149,7 +149,7 @@ foreign import anotherArray :: Json
 foreign import anotherObject :: Json
 
 basicInfo :: Json -> String
-basicInfo = foldJson
+basicInfo = caseJson
   (const "It was null")
   (\b -> "Got a boolean: " <>
             if b then "it was true!" else "It was false.")
@@ -168,20 +168,20 @@ basicInfo anotherArray  -- => "Got an array, which had 3 items."
 basicInfo anotherObject -- => "Got an object, which had 2 items."
 ```
 
-`foldJson` is the fundamental function for pattern matching on `Json` values;
-any kind of pattern matching you might want to do can be done with `foldJson`.
+`caseJson` is the fundamental function for pattern matching on `Json` values;
+any kind of pattern matching you might want to do can be done with `caseJson`.
 
-However, `foldJson` is not always comfortable to use, so Argonaut provides a
-few other simpler versions for convenience. For example, the `foldJsonX`
+However, `caseJson` is not always comfortable to use, so Argonaut provides a
+few other simpler versions for convenience. For example, the `caseJsonX`
 functions can be used to match on a specific type. The first argument acts as a
 default value, to be used if the `Json` value turned out not to be that type.
 For example, we can write a function which tests whether a JSON value is the
 string "lol" like this:
 
 ```purescript
-foldJsonString :: forall a. a -> (String -> a) -> Json -> a
+caseJsonString :: forall a. a -> (String -> a) -> Json -> a
 
-isJsonLol = foldJsonString false (_ == "lol")
+isJsonLol = caseJsonString false (_ == "lol")
 ```
 
 If the `Json` value is not a string, the default `false` is used. Otherwise,

@@ -23,7 +23,7 @@ function isArray(a) {
   return objToString.call(a) === "[object Array]";
 }
 
-exports._foldJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
+exports._caseJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
   if (j == null) return isNull();
   else if (typeof j === "boolean") return isBool(j);
   else if (typeof j === "number") return isNum(j);

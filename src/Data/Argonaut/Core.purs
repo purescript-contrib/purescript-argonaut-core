@@ -3,13 +3,13 @@
 -- | for this module.
 module Data.Argonaut.Core
   ( Json
-  , foldJson
-  , foldJsonNull
-  , foldJsonBoolean
-  , foldJsonNumber
-  , foldJsonString
-  , foldJsonArray
-  , foldJsonObject
+  , caseJson
+  , caseJsonNull
+  , caseJsonBoolean
+  , caseJsonNumber
+  , caseJsonString
+  , caseJsonArray
+  , caseJsonObject
   , isNull
   , isBoolean
   , isNumber
@@ -69,7 +69,7 @@ instance ordJNull :: Ord JNull where
   compare _ _ = EQ
 
 -- | Case analysis for `Json` values. See the README for more information.
-foldJson
+caseJson
   :: forall a
    . (Unit -> a)
   -> (Boolean -> a)
@@ -78,62 +78,62 @@ foldJson
   -> (Array Json -> a)
   -> (Object Json -> a)
   -> Json -> a
-foldJson a b c d e f json = runFn7 _foldJson a b c d e f json
+caseJson a b c d e f json = runFn7 _caseJson a b c d e f json
 
--- | A simpler version of `foldJson` which accepts a callback for when the
+-- | A simpler version of `caseJson` which accepts a callback for when the
 -- | `Json` argument was null, and a default value for all other cases.
-foldJsonNull :: forall a. a -> (Unit -> a) -> Json -> a
-foldJsonNull d f j = runFn7 _foldJson f (const d) (const d) (const d) (const d) (const d) j
+caseJsonNull :: forall a. a -> (Unit -> a) -> Json -> a
+caseJsonNull d f j = runFn7 _caseJson f (const d) (const d) (const d) (const d) (const d) j
 
--- | A simpler version of `foldJson` which accepts a callback for when the
+-- | A simpler version of `caseJson` which accepts a callback for when the
 -- | `Json` argument was a `Boolean`, and a default value for all other cases.
-foldJsonBoolean :: forall a. a -> (Boolean -> a) -> Json -> a
-foldJsonBoolean d f j = runFn7 _foldJson (const d) f (const d) (const d) (const d) (const d) j
+caseJsonBoolean :: forall a. a -> (Boolean -> a) -> Json -> a
+caseJsonBoolean d f j = runFn7 _caseJson (const d) f (const d) (const d) (const d) (const d) j
 
--- | A simpler version of `foldJson` which accepts a callback for when the
+-- | A simpler version of `caseJson` which accepts a callback for when the
 -- | `Json` argument was a `Number`, and a default value for all other cases.
-foldJsonNumber :: forall a. a -> (Number -> a) -> Json -> a
-foldJsonNumber d f j = runFn7 _foldJson (const d) (const d) f (const d) (const d) (const d) j
+caseJsonNumber :: forall a. a -> (Number -> a) -> Json -> a
+caseJsonNumber d f j = runFn7 _caseJson (const d) (const d) f (const d) (const d) (const d) j
 
--- | A simpler version of `foldJson` which accepts a callback for when the
+-- | A simpler version of `caseJson` which accepts a callback for when the
 -- | `Json` argument was a `String`, and a default value for all other cases.
-foldJsonString :: forall a. a -> (String -> a) -> Json -> a
-foldJsonString d f j = runFn7 _foldJson (const d) (const d) (const d) f (const d) (const d) j
+caseJsonString :: forall a. a -> (String -> a) -> Json -> a
+caseJsonString d f j = runFn7 _caseJson (const d) (const d) (const d) f (const d) (const d) j
 
--- | A simpler version of `foldJson` which accepts a callback for when the
+-- | A simpler version of `caseJson` which accepts a callback for when the
 -- | `Json` argument was a `Array Json`, and a default value for all other cases.
-foldJsonArray :: forall a. a -> (Array Json -> a) -> Json -> a
-foldJsonArray d f j = runFn7 _foldJson (const d) (const d) (const d) (const d) f (const d) j
+caseJsonArray :: forall a. a -> (Array Json -> a) -> Json -> a
+caseJsonArray d f j = runFn7 _caseJson (const d) (const d) (const d) (const d) f (const d) j
 
--- | A simpler version of `foldJson` which accepts a callback for when the
+-- | A simpler version of `caseJson` which accepts a callback for when the
 -- | `Json` argument was an `Object`, and a default value for all other cases.
-foldJsonObject :: forall a. a -> (Object Json -> a) -> Json -> a
-foldJsonObject d f j = runFn7 _foldJson (const d) (const d) (const d) (const d) (const d) f j
+caseJsonObject :: forall a. a -> (Object Json -> a) -> Json -> a
+caseJsonObject d f j = runFn7 _caseJson (const d) (const d) (const d) (const d) (const d) f j
 
 verbJsonType :: forall a b. b -> (a -> b) -> (b -> (a -> b) -> Json -> b) -> Json -> b
-verbJsonType def f fold = fold def f
+verbJsonType def f g = g def f
 
 -- Tests
 isJsonType :: forall a. (Boolean -> (a -> Boolean) -> Json -> Boolean) -> Json -> Boolean
 isJsonType = verbJsonType false (const true)
 
 isNull :: Json -> Boolean
-isNull = isJsonType foldJsonNull
+isNull = isJsonType caseJsonNull
 
 isBoolean :: Json -> Boolean
-isBoolean = isJsonType foldJsonBoolean
+isBoolean = isJsonType caseJsonBoolean
 
 isNumber :: Json -> Boolean
-isNumber = isJsonType foldJsonNumber
+isNumber = isJsonType caseJsonNumber
 
 isString :: Json -> Boolean
-isString = isJsonType foldJsonString
+isString = isJsonType caseJsonString
 
 isArray :: Json -> Boolean
-isArray = isJsonType foldJsonArray
+isArray = isJsonType caseJsonArray
 
 isObject :: Json -> Boolean
-isObject = isJsonType foldJsonObject
+isObject = isJsonType caseJsonObject
 
 -- Decoding
 
@@ -145,22 +145,22 @@ toJsonType
 toJsonType = verbJsonType Nothing Just
 
 toNull :: Json -> Maybe Unit
-toNull = toJsonType foldJsonNull
+toNull = toJsonType caseJsonNull
 
 toBoolean :: Json -> Maybe Boolean
-toBoolean = toJsonType foldJsonBoolean
+toBoolean = toJsonType caseJsonBoolean
 
 toNumber :: Json -> Maybe Number
-toNumber = toJsonType foldJsonNumber
+toNumber = toJsonType caseJsonNumber
 
 toString :: Json -> Maybe String
-toString = toJsonType foldJsonString
+toString = toJsonType caseJsonString
 
 toArray :: Json -> Maybe (Array Json)
-toArray = toJsonType foldJsonArray
+toArray = toJsonType caseJsonArray
 
 toObject :: Json -> Maybe (Object Json)
-toObject = toJsonType foldJsonObject
+toObject = toJsonType caseJsonObject
 
 -- Encoding
 
@@ -200,7 +200,7 @@ jsonSingletonObject key val = fromObject (Obj.singleton key val)
 
 foreign import stringify :: Json -> String
 
-foreign import _foldJson
+foreign import _caseJson
   :: forall z
    . Fn7
       (Unit -> z)
