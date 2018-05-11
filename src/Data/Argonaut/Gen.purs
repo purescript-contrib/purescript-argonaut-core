@@ -34,7 +34,7 @@ genJson = Gen.resize (min 5) $ Gen.sized genJson'
   extendJObj obj k = do
     v <- genJson
     pure $
-      J.foldJsonObject
+      J.caseJsonObject
         (J.jsonSingletonObject k v)
         (J.fromObject <<< Obj.insert k v)
         obj
