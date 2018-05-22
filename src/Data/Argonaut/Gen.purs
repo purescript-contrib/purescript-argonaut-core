@@ -8,9 +8,8 @@ import Control.Monad.Gen as Gen
 import Control.Monad.Rec.Class (class MonadRec)
 import Data.Argonaut.Core as J
 import Data.Array as A
-import Data.Char as C
 import Data.NonEmpty ((:|))
-import Data.String as S
+import Data.String.Gen (genUnicodeString)
 import Foreign.Object as Obj
 
 genJson :: forall m. MonadGen m => MonadRec m => Lazy (m J.Json) => m J.Json
@@ -28,7 +27,7 @@ genJson = Gen.resize (min 5) $ Gen.sized genJson'
   genJArray = J.fromArray <$> Gen.unfoldable (defer \_ -> genJson)
 
   genJObject :: m J.Json
-  genJObject = A.foldM extendJObj J.jsonEmptyObject =<< Gen.unfoldable genString
+  genJObject = A.foldM extendJObj J.jsonEmptyObject =<< Gen.unfoldable genUnicodeString
 
   extendJObj :: J.Json -> String -> m J.Json
   extendJObj obj k = do
@@ -46,10 +45,4 @@ genJson = Gen.resize (min 5) $ Gen.sized genJson'
   genJNumber = J.fromNumber <$> Gen.chooseFloat (-1000000.0) 1000000.0
 
   genJString :: m J.Json
-  genJString = J.fromString <$> genString
-
-  genString :: m String
-  genString = S.fromCharArray <$> Gen.unfoldable genChar
-
-  genChar :: m Char
-  genChar = C.fromCharCode <$> Gen.chooseInt 0 65535
+  genJString = J.fromString <$> genUnicodeString
