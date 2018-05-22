@@ -3,7 +3,7 @@ module Test.Main where
 import Prelude
 
 import Control.Monad.Gen as Gen
-import Data.Argonaut.Core (Json, foldJson, foldJsonArray, foldJsonBoolean, foldJsonNull, foldJsonNumber, foldJsonObject, foldJsonString, fromArray, fromBoolean, fromNumber, fromObject, fromString, isArray, isBoolean, isNull, isNumber, isObject, isString, jsonNull, stringify, toArray, toBoolean, toNull, toNumber, toObject, toString)
+import Data.Argonaut.Core (Json, caseJson, caseJsonArray, caseJsonBoolean, caseJsonNull, caseJsonNumber, caseJsonObject, caseJsonString, fromArray, fromBoolean, fromNumber, fromObject, fromString, isArray, isBoolean, isNull, isNumber, isObject, isString, jsonNull, stringify, toArray, toBoolean, toNull, toNumber, toObject, toString)
 import Data.Argonaut.Gen (genJson)
 import Data.Argonaut.Parser (jsonParser)
 import Data.Array as A
@@ -35,15 +35,15 @@ isTest = do
 
 foldTest :: Effect Unit
 foldTest = do
-  assert (foldFn thisIsNull == "null" <?> "Error in foldJson null")
-  assert (foldFn thisIsBoolean == "boolean" <?> "Error in foldJson boolean")
-  assert (foldFn thisIsNumber == "number" <?> "Error in foldJson number")
-  assert (foldFn thisIsString == "string" <?> "Error in foldJson string")
-  assert (foldFn thisIsArray == "array" <?> "Error in foldJson array")
-  assert (foldFn thisIsObject == "object" <?> "Error in foldJson object")
+  assert (foldFn thisIsNull == "null" <?> "Error in caseJson null")
+  assert (foldFn thisIsBoolean == "boolean" <?> "Error in caseJson boolean")
+  assert (foldFn thisIsNumber == "number" <?> "Error in caseJson number")
+  assert (foldFn thisIsString == "string" <?> "Error in caseJson string")
+  assert (foldFn thisIsArray == "array" <?> "Error in caseJson array")
+  assert (foldFn thisIsObject == "object" <?> "Error in caseJson object")
 
 foldFn :: Json -> String
-foldFn = foldJson
+foldFn = caseJson
          (const "null")
          (const "boolean")
          (const "number")
@@ -63,43 +63,43 @@ cases =
 
 foldXXX :: Effect Unit
 foldXXX = do
-  assert ((foldJsonNull "not null" (const "null") <$> cases) ==
+  assert ((caseJsonNull "not null" (const "null") <$> cases) ==
           ["null", "not null", "not null", "not null", "not null", "not null"] <?>
-          "Error in foldJsonNull")
-  assert ((foldJsonBoolean "not boolean" (const "boolean") <$> cases) ==
+          "Error in caseJsonNull")
+  assert ((caseJsonBoolean "not boolean" (const "boolean") <$> cases) ==
           ["not boolean", "boolean", "not boolean", "not boolean", "not boolean", "not boolean"] <?>
-          "Error in foldJsonBoolean")
-  assert ((foldJsonNumber "not number" (const "number") <$> cases) ==
+          "Error in caseJsonBoolean")
+  assert ((caseJsonNumber "not number" (const "number") <$> cases) ==
           ["not number", "not number", "number", "not number", "not number", "not number"] <?>
-          "Error in foldJsonNumber")
+          "Error in caseJsonNumber")
 
-  assert ((foldJsonString "not string" (const "string") <$> cases) ==
+  assert ((caseJsonString "not string" (const "string") <$> cases) ==
           ["not string", "not string", "not string", "string", "not string", "not string"] <?>
-          "Error in foldJsonString")
+          "Error in caseJsonString")
 
-  assert ((foldJsonArray "not array" (const "array") <$> cases) ==
+  assert ((caseJsonArray "not array" (const "array") <$> cases) ==
           ["not array", "not array", "not array", "not array", "array", "not array"] <?>
-          "Error in foldJsonArray")
-  assert ((foldJsonObject "not object" (const "object") <$> cases) ==
+          "Error in caseJsonArray")
+  assert ((caseJsonObject "not object" (const "object") <$> cases) ==
           ["not object", "not object", "not object", "not object", "not object", "object"] <?>
-          "Error in foldJsonObject")
+          "Error in caseJsonObject")
 
 
 fromTest :: Effect Unit
 fromTest = do
-  assert ((foldJsonNull false (const true) jsonNull) <?> "Error in fromNull")
-  quickCheck (\bool -> foldJsonBoolean Nothing Just (fromBoolean bool) == Just bool <?> "Error in fromBoolean")
-  quickCheck (\num -> foldJsonNumber Nothing Just (fromNumber num) == Just num <?> "Error in fromNumber")
-  quickCheck (\str -> foldJsonString Nothing Just (fromString str) == Just str <?> "Error in fromString")
+  assert ((caseJsonNull false (const true) jsonNull) <?> "Error in fromNull")
+  quickCheck (\bool -> caseJsonBoolean Nothing Just (fromBoolean bool) == Just bool <?> "Error in fromBoolean")
+  quickCheck (\num -> caseJsonNumber Nothing Just (fromNumber num) == Just num <?> "Error in fromNumber")
+  quickCheck (\str -> caseJsonString Nothing Just (fromString str) == Just str <?> "Error in fromString")
   quickCheck (\num ->
                let arr :: Array Json
                    arr = A.singleton (fromNumber num)
-               in (foldJsonArray Nothing  Just (fromArray arr) == Just arr)
+               in (caseJsonArray Nothing  Just (fromArray arr) == Just arr)
                   <?> "Error in fromArray")
   quickCheck (\(Tuple str num) ->
                let sm :: Obj.Object Json
                    sm = Obj.singleton str (fromNumber num)
-               in (foldJsonObject Nothing Just (fromObject sm) == Just sm)
+               in (caseJsonObject Nothing Just (fromObject sm) == Just sm)
                   <?> "Error in fromObject")
 
 toTest :: Effect Unit
@@ -136,9 +136,9 @@ main :: Effect Unit
 main = do
   log "isXxx tests"
   isTest
-  log "foldJson tests"
+  log "caseJson tests"
   foldTest
-  log "foldJsonXxx tests"
+  log "caseJsonXxx tests"
   foldXXX
   log "fromXxx tests"
   fromTest
