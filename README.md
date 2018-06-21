@@ -1,8 +1,10 @@
 # purescript-argonaut-core
 
 [![Latest release](http://img.shields.io/github/release/purescript-contrib/purescript-argonaut-core.svg)](https://github.com/purescript-contrib/purescript-argonaut-core/releases)
-[![Build Status](https://travis-ci.org/purescript-contrib/purescript-argonaut-core.svg?branch=master)](https://travis-ci.org/purescript-contrib/purescript-argonaut-core)
-[![Maintainer: slamdata](https://img.shields.io/badge/maintainer-slamdata-lightgrey.svg)](http://github.com/slamdata)
+[![Build status](https://travis-ci.org/purescript-contrib/purescript-argonaut-core.svg?branch=master)](https://travis-ci.org/purescript-contrib/purescript-argonaut-core)
+[![Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core/badge)](http://pursuit.purescript.org/packages/purescript-argonaut-core/)
+[![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-lightgrey.svg)](http://github.com/garyb)
+[![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-lightgrey.svg)](http://github.com/thomashoneyman)
 
 Core part of `purescript-argonaut` that contains basic types for `Json`, case analysis, printer and parser.
 
@@ -200,3 +202,7 @@ isJsonLol json =
     Just str -> str == "lol"
     Nothing  -> false
 ```
+
+## Contributing
+
+Read the [contribution guidelines](https://github.com/purescript-contrib/purescript-argonaut-core/blob/master/.github/contributing.md) to get started and see helpful related resources.
