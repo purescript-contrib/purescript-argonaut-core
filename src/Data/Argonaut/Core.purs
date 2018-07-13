@@ -37,6 +37,8 @@ module Data.Argonaut.Core
   , jsonEmptyObject
   , jsonSingletonObject
   , stringify
+  , stringifyWithSpace
+  , stringifyWithIndent
   ) where
 
 import Prelude
@@ -199,6 +201,14 @@ jsonSingletonObject :: String -> Json -> Json
 jsonSingletonObject key val = fromObject (Obj.singleton key val)
 
 foreign import stringify :: Json -> String
+
+foreign import _stringifyWithSpace :: forall a. a -> Json -> String
+
+stringifyWithSpace :: String -> Json -> String
+stringifyWithSpace = _stringifyWithSpace
+
+stringifyWithIndent :: Int -> Json -> String
+stringifyWithIndent = _stringifyWithSpace
 
 foreign import _caseJson
   :: forall z

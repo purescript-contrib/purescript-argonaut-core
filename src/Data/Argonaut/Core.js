@@ -16,6 +16,12 @@ exports.stringify = function (j) {
   return JSON.stringify(j);
 };
 
+exports._stringifyWithSpace = function (s) {
+  return function (j) {
+    return JSON.stringify(j, null, s);
+  };
+};
+
 var objToString = Object.prototype.toString;
 var objKeys = Object.keys;
 
