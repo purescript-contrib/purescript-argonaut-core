@@ -30,7 +30,7 @@
     "purescript-arrays": "^5.0.0",
     "purescript-control": "^4.0.0",
     "purescript-either": "^4.0.0",
-    "purescript-foreign-object": "^1.0.0",
+    "purescript-foreign-object": "^2.0.0",
     "purescript-functions": "^4.0.0",
     "purescript-gen": "^2.0.0",
     "purescript-maybe": "^4.0.0",
@@ -40,6 +40,6 @@
     "purescript-tailrec": "^4.0.0"
   },
   "devDependencies": {
-    "purescript-quickcheck": "^5.0.0"
+    "purescript-quickcheck": "^6.0.0"
   }
 }
