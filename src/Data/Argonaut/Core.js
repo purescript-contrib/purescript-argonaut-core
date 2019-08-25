@@ -16,11 +16,8 @@ exports.stringify = function (j) {
   return JSON.stringify(j);
 };
 
-var objToString = Object.prototype.toString;
-var objKeys = Object.keys;
-
 function isArray(a) {
-  return objToString.call(a) === "[object Array]";
+  return Object.prototype.toString.call(a) === "[object Array]";
 }
 
 exports._caseJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
@@ -28,7 +25,7 @@ exports._caseJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
   else if (typeof j === "boolean") return isBool(j);
   else if (typeof j === "number") return isNum(j);
   else if (typeof j === "string") return isStr(j);
-  else if (objToString.call(j) === "[object Array]")
+  else if (Object.prototype.toString.call(j) === "[object Array]")
     return isArr(j);
   else return isObj(j);
 };
@@ -83,8 +80,8 @@ exports._compare = function _compare (EQ, GT, LT, a, b) {
     else if (typeof b === "string") return GT;
     else if (isArray(b)) return GT;
     else {
-      var akeys = objKeys(a);
-      var bkeys = objKeys(b);
+      var akeys = Object.keys(a);
+      var bkeys = Object.keys(b);
       if (akeys.length < bkeys.length) return LT;
       else if (akeys.length > bkeys.length) return GT;
       var keys = akeys.concat(bkeys).sort();
