@@ -23,6 +23,7 @@ foreign import thisIsNumber :: Json
 foreign import thisIsString :: Json
 foreign import thisIsArray :: Json
 foreign import thisIsObject :: Json
+foreign import thisIsInvalidString :: String
 
 isTest :: Effect Unit
 isTest = do
@@ -120,7 +121,7 @@ toTest = do
 
 parserTest :: Effect Unit
 parserTest = do
-  assert ((isLeft (jsonParser "\\\ffff")) <?> "Error in jsonParser")
+  assert ((isLeft (jsonParser thisIsInvalidString)) <?> "Error in jsonParser")
   quickCheck' 10 roundtripTest
   where
   roundtripTest :: Gen Result
