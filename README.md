@@ -6,7 +6,6 @@
 [![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-lightgrey.svg)](http://github.com/garyb)
 [![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-lightgrey.svg)](http://github.com/thomashoneyman)
 
-
 [Argonaut](https://github.com/purescript-contrib/purescript-argonaut) is a collection of libraries for working with JSON in PureScript. `argonaut-core` defines the core `Json` type, along with basic parsing, printing, and folding functions which operate on it.
 
 ## Installation
@@ -23,9 +22,7 @@ bower install purescript-argonaut-core
 
 ## Documentation
 
-Module documentation is [published on Pursuit](https://pursuit.purescript.org/packages/purescript-argonaut-core).
-
-You may also be interested in other libraries in the Argonaut ecosystem:
+Module documentation is [published on Pursuit](https://pursuit.purescript.org/packages/purescript-argonaut-core). You may also be interested in other libraries in the Argonaut ecosystem:
 
 - [purescript-argonaut-codecs](https://github.com/purescript-contrib/purescript-argonaut-codecs) provides codecs based on `EncodeJson` and `DecodeJson` type classes, along with instances for common data types and combinators for encoding and decoding `Json` values.
 - [purescript-codec-argonaut](https://github.com/garyb/purescript-codec-argonaut) supports an alternative approach for codecs, which are based on profunctors instead of type classes.
