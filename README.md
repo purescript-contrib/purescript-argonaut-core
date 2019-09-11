@@ -6,17 +6,28 @@
 [![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-lightgrey.svg)](http://github.com/garyb)
 [![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-lightgrey.svg)](http://github.com/thomashoneyman)
 
-Core part of `purescript-argonaut` that contains basic types for `Json`, case analysis, printer and parser.
+[Argonaut](https://github.com/purescript-contrib/purescript-argonaut) is a collection of libraries for working with JSON in PureScript. `argonaut-core` defines the core `Json` type, along with basic parsing, printing, and folding functions which operate on it.
 
 ## Installation
 
-```shell
+This library is bundled as part of [Argonaut](https://github.com/purescript-contrib/purescript-argonaut) and can be installed via that library. To install just `argonaut-core`:
+
+```sh
+# with Spago
+spago install argonaut-core
+
+# with Bower
 bower install purescript-argonaut-core
 ```
 
 ## Documentation
 
-Module documentation is [published on Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core).
+Module documentation is [published on Pursuit](https://pursuit.purescript.org/packages/purescript-argonaut-core). You may also be interested in other libraries in the Argonaut ecosystem:
+
+- [purescript-argonaut-codecs](https://github.com/purescript-contrib/purescript-argonaut-codecs) provides codecs based on `EncodeJson` and `DecodeJson` type classes, along with instances for common data types and combinators for encoding and decoding `Json` values.
+- [purescript-codec-argonaut](https://github.com/garyb/purescript-codec-argonaut) supports an alternative approach for codecs, which are based on profunctors instead of type classes.
+- [purescript-argonaut-traversals](https://github.com/purescript-contrib/purescript-argonaut-traversals) defines prisms, traversals, and zippers for the `Json` type.
+- [purescript-argonaut-generic](https://github.com/purescript-contrib/purescript-argonaut-generic) supports generic encoding and decoding for any type with a `Generic` instance.
 
 ## Tutorial
 
