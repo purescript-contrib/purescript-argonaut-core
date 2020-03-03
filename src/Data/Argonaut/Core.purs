@@ -172,7 +172,7 @@ toString = toJsonType caseJsonString
 toArray :: Json -> Maybe (Array Json)
 toArray = toJsonType caseJsonArray
 
--- | Convert `Json` to an `Object` of `Json` values, if the `Json` is an array.
+-- | Convert `Json` to an `Object` of `Json` values, if the `Json` is an object.
 toObject :: Json -> Maybe (Object Json)
 toObject = toJsonType caseJsonObject
 
