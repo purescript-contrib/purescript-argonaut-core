@@ -163,7 +163,8 @@ toBoolean = toJsonType caseJsonBoolean
 toNumber :: Json -> Maybe Number
 toNumber = toJsonType caseJsonNumber
 
--- | Convert `Json` to a `String` value, if the `Json` is a string.
+-- | Convert `Json` to a `String` value, if the `Json` is a string. To write a
+-- | `Json` value to a JSON string, see `stringify`.
 toString :: Json -> Maybe String
 toString = toJsonType caseJsonString
 
@@ -230,7 +231,8 @@ jsonSingletonArray j = fromArray [j]
 jsonSingletonObject :: String -> Json -> Json
 jsonSingletonObject key val = fromObject (Obj.singleton key val)
 
--- | Converts a `Json` value to a JSON string.
+-- | Converts a `Json` value to a JSON string. To retrieve a string from a `Json`
+-- | string value, see `fromString`.
 foreign import stringify :: Json -> String
 
 foreign import _caseJson
