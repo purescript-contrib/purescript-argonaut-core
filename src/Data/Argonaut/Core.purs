@@ -114,24 +114,31 @@ verbJsonType :: forall a b. b -> (a -> b) -> (b -> (a -> b) -> Json -> b) -> Jso
 verbJsonType def f g = g def f
 
 -- Tests
+
 isJsonType :: forall a. (Boolean -> (a -> Boolean) -> Json -> Boolean) -> Json -> Boolean
 isJsonType = verbJsonType false (const true)
 
+-- | Check if the provided `Json` is the `null` value
 isNull :: Json -> Boolean
 isNull = isJsonType caseJsonNull
 
+-- | Check if the provided `Json` is a `Boolean`
 isBoolean :: Json -> Boolean
 isBoolean = isJsonType caseJsonBoolean
 
+-- | Check if the provided `Json` is a `Number`
 isNumber :: Json -> Boolean
 isNumber = isJsonType caseJsonNumber
 
+-- | Check if the provided `Json` is a `String`
 isString :: Json -> Boolean
 isString = isJsonType caseJsonString
 
+-- | Check if the provided `Json` is an `Array`
 isArray :: Json -> Boolean
 isArray = isJsonType caseJsonArray
 
+-- | Check if the provided `Json` is an `Object`
 isObject :: Json -> Boolean
 isObject = isJsonType caseJsonObject
 
@@ -144,60 +151,86 @@ toJsonType
   -> Maybe a
 toJsonType = verbJsonType Nothing Just
 
+-- | Convert `Json` to the `Unit` value if the `Json` is the null value
 toNull :: Json -> Maybe Unit
 toNull = toJsonType caseJsonNull
 
+-- | Convert `Json` to a `Boolean` value, if the `Json` is a boolean.
 toBoolean :: Json -> Maybe Boolean
 toBoolean = toJsonType caseJsonBoolean
 
+-- | Convert `Json` to a `Number` value, if the `Json` is a number.
 toNumber :: Json -> Maybe Number
 toNumber = toJsonType caseJsonNumber
 
+-- | Convert `Json` to a `String` value, if the `Json` is a string.
 toString :: Json -> Maybe String
 toString = toJsonType caseJsonString
 
+-- | Convert `Json` to an `Array` of `Json` values, if the `Json` is an array.
 toArray :: Json -> Maybe (Array Json)
 toArray = toJsonType caseJsonArray
 
+-- | Convert `Json` to an `Object` of `Json` values, if the `Json` is an array.
 toObject :: Json -> Maybe (Object Json)
 toObject = toJsonType caseJsonObject
 
 -- Encoding
 
+-- | Construct `Json` from a `Boolean` value 
 foreign import fromBoolean :: Boolean -> Json
+
+-- | Construct `Json` from a `Number` value 
 foreign import fromNumber :: Number -> Json
+
+-- | Construct `Json` from a `String` value. If you would like to parse a string 
+-- | of JSON into valid `Json`, see `jsonParser`.
 foreign import fromString :: String -> Json
+
+-- | Construct `Json` from an array of `Json` values
 foreign import fromArray :: Array Json -> Json
+
+-- | Construct `Json` from an object with `Json` values
 foreign import fromObject :: Object Json -> Json
 
 -- Defaults
 
+-- | The JSON null value represented as `Json`
 foreign import jsonNull :: Json
 
+-- | The true boolean value represented as `Json`
 jsonTrue :: Json
 jsonTrue = fromBoolean true
 
+-- | The false boolean value represented as `Json`
 jsonFalse :: Json
 jsonFalse = fromBoolean false
 
+-- | The number zero represented as `Json`
 jsonZero :: Json
 jsonZero = fromNumber 0.0
 
+-- | An empty string represented as `Json`
 jsonEmptyString :: Json
 jsonEmptyString = fromString ""
 
+-- | An empty array represented as `Json`
 jsonEmptyArray :: Json
 jsonEmptyArray = fromArray []
 
+-- | An empty object represented as `Json`
 jsonEmptyObject :: Json
 jsonEmptyObject = fromObject Obj.empty
 
+-- | Constructs a `Json` array value containing only the provided value
 jsonSingletonArray :: Json -> Json
 jsonSingletonArray j = fromArray [j]
 
+-- | Constructs a `Json` object value containing only the provided key and value
 jsonSingletonObject :: String -> Json -> Json
 jsonSingletonObject key val = fromObject (Obj.singleton key val)
 
+-- | Converts a `Json` value to a JSON string.
 foreign import stringify :: Json -> String
 
 foreign import _caseJson
