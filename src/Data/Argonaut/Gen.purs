@@ -12,6 +12,8 @@ import Data.NonEmpty ((:|))
 import Data.String.Gen (genUnicodeString)
 import Foreign.Object as Obj
 
+-- | A generator for `Json` values. Especially useful for writing property-based
+-- | tests.
 genJson :: forall m. MonadGen m => MonadRec m => Lazy (m J.Json) => m J.Json
 genJson = Gen.resize (min 5) $ Gen.sized genJson'
   where
