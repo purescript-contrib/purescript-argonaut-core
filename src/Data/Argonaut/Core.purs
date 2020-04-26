@@ -41,7 +41,7 @@ module Data.Argonaut.Core
 
 import Prelude
 
-import Data.Function.Uncurried (Fn5, runFn5, Fn7, runFn7)
+import Data.Function.Uncurried (Fn2, runFn2, Fn5, runFn5, Fn7, runFn7)
 import Data.Maybe (Maybe(..))
 import Foreign.Object (Object)
 import Foreign.Object as Obj
@@ -178,13 +178,13 @@ toObject = toJsonType caseJsonObject
 
 -- Encoding
 
--- | Construct `Json` from a `Boolean` value 
+-- | Construct `Json` from a `Boolean` value
 foreign import fromBoolean :: Boolean -> Json
 
--- | Construct `Json` from a `Number` value 
+-- | Construct `Json` from a `Number` value
 foreign import fromNumber :: Number -> Json
 
--- | Construct `Json` from a `String` value. If you would like to parse a string 
+-- | Construct `Json` from a `String` value. If you would like to parse a string
 -- | of JSON into valid `Json`, see `jsonParser`.
 foreign import fromString :: String -> Json
 
@@ -234,6 +234,11 @@ jsonSingletonObject key val = fromObject (Obj.singleton key val)
 -- | Converts a `Json` value to a JSON string. To retrieve a string from a `Json`
 -- | string value, see `fromString`.
 foreign import stringify :: Json -> String
+
+stringifyWithIdentation :: Int -> Json -> String
+stringifyWithIdentation = runFn2 _stringifyWithIdentation
+
+foreign import _stringifyWithIdentation :: Fn2 Int Json String
 
 foreign import _caseJson
   :: forall z
