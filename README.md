@@ -78,7 +78,12 @@ someObject = jsonParser
   """
 ```
 
-See the [docs](./docs) for an in-depth overview of the rest of the Argonaut Core library.
+See the [docs](./docs) for an in-depth overview of the rest of the Argonaut Core library. You may also be interested in other libraries in the Argonaut ecosystem:
+
+- [purescript-argonaut-codecs](https://github.com/purescript-contrib/purescript-argonaut-codecs) provides codecs based on `EncodeJson` and `DecodeJson` type classes, along with instances for common data types and combinators for encoding and decoding `Json` values.
+- [purescript-codec-argonaut](https://github.com/garyb/purescript-codec-argonaut) supports an alternative approach for codecs, which are based on profunctors instead of type classes.
+- [purescript-argonaut-traversals](https://github.com/purescript-contrib/purescript-argonaut-traversals) defines prisms, traversals, and zippers for the `Json` type.
+- [purescript-argonaut-generic](https://github.com/purescript-contrib/purescript-argonaut-generic) supports generic encoding and decoding for any type with a `Generic` instance.
 
 ## Documentation
 
