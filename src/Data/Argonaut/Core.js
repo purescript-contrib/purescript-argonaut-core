@@ -1,3 +1,4 @@
+/* eslint-disable no-eq-null, eqeqeq */
 "use strict";
 
 function id(x) {
@@ -30,7 +31,7 @@ exports._caseJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
   else return isObj(j);
 };
 
-exports._compare = function _compare (EQ, GT, LT, a, b) {
+exports._compare = function _compare(EQ, GT, LT, a, b) {
   if (a == null) {
     if (b == null) return EQ;
     else return LT;
