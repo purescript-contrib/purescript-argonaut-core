@@ -6,7 +6,7 @@
 [![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-teal.svg)](http://github.com/garyb)
 [![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-teal.svg)](http://github.com/thomashoneyman)
 
-The library summary hasn't been written yet (contributions are welcome!). The library summary describes the library's purpose in one to three sentences.
+The core `Json` type for the [Argonaut](https://github.com/purescript-contrib/purescript-argonaut) libraries, along with basic parsing, printing, and folding functions which operate on it.
 
 ## Installation
 
@@ -16,9 +16,69 @@ Install `argonaut-core` with [Spago](https://github.com/purescript/spago):
 spago install argonaut-core
 ```
 
+or install it as part of the [Argonaut](https://github.com/purescript-contrib/purescript-argonaut) bundle:
+
+```sh
+spago install argonaut
+```
+
 ## Quick start
 
-The quick start hasn't been written yet (contributions are welcome!). The quick start covers a common, minimal use case for the library, whereas longer examples and tutorials are kept in the [docs directory](./docs.)
+Use the `Json` type to represent JSON data in PureScript. You can produce a value of `Json` via the FFI or by functions from `Data.Argonaut.Core`.
+
+For example, via the FFI:
+
+```js
+// In an FFI module
+exports.someNumber = 23.6;
+exports.someObject = { people: [{ name: "John" }, { name: "Jane" }] };
+```
+
+```purs
+foreign import someNumber  :: Json
+foreign import someObject :: Json
+```
+
+In general, if a JavaScript value could be returned from a call to `JSON.parse` then you can import it via the FFI as `Json`. That includes objects, booleans, numbers, strings, and arrays (but not things like functions).
+
+You can also use the construction functions which follow the naming convention `fromX` or `jsonX`:
+
+```purs
+import Data.Tuple (Tuple(..))
+import Foreign.Object as Object
+import Data.Argonaut.Core as A
+
+someNumber :: Json
+someNumber = A.fromNumber 23.6
+
+someObject :: Json
+someObject =
+  A.fromObject
+    ( Object.fromFoldable
+        [ Tuple "people"
+            ( A.fromArray
+                [ A.jsonSingletonObject "name" (A.fromString "John")
+                , A.jsonSingletonObject "name" (A.fromString "Jane")
+                ]
+            )
+        ]
+    )
+```
+
+Finally, you can parse JSON from a string using the `jsonParser` function. However, this isn't guaranteed to produce a correct value, so it returns a `Maybe` value.
+
+```purs
+import Data.Argonaut.Core (jsonParser)
+import Data.Maybe (Maybe(..))
+
+someObject :: Maybe Json
+someObject = jsonParser
+  """
+  { people: [{ name: "John" }, { name: "Jane" }] };
+  """
+```
+
+See the [docs](./docs) for an in-depth overview of the rest of the Argonaut Core library.
 
 ## Documentation
 
