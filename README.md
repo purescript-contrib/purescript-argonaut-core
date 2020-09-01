@@ -1,219 +1,44 @@
-# purescript-argonaut-core
+# Argonaut Core
 
-[![Latest release](http://img.shields.io/github/release/purescript-contrib/purescript-argonaut-core.svg)](https://github.com/purescript-contrib/purescript-argonaut-core/releases)
-[![Build status](https://travis-ci.org/purescript-contrib/purescript-argonaut-core.svg?branch=master)](https://travis-ci.org/purescript-contrib/purescript-argonaut-core)
-[![Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core/badge)](http://pursuit.purescript.org/packages/purescript-argonaut-core/)
-[![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-lightgrey.svg)](http://github.com/garyb)
-[![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-lightgrey.svg)](http://github.com/thomashoneyman)
+[![CI](https://github.com/purescript-contrib/purescript-argonaut-core/workflows/CI/badge.svg?branch=main)](https://github.com/purescript-contrib/purescript-argonaut-core/actions?query=workflow%3ACI+branch%3Amain)
+[![Release](http://img.shields.io/github/release/purescript-contrib/purescript-argonaut-core.svg)](https://github.com/purescript-contrib/purescript-argonaut-core/releases)
+[![Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core/badge)](http://pursuit.purescript.org/packages/purescript-argonaut-core)
+[![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-teal.svg)](http://github.com/garyb)
+[![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-teal.svg)](http://github.com/thomashoneyman)
 
-[Argonaut](https://github.com/purescript-contrib/purescript-argonaut) is a collection of libraries for working with JSON in PureScript. `argonaut-core` defines the core `Json` type, along with basic parsing, printing, and folding functions which operate on it.
+The library summary hasn't been written yet (contributions are welcome!). The library summary describes the library's purpose in one to three sentences.
 
 ## Installation
 
-This library is bundled as part of [Argonaut](https://github.com/purescript-contrib/purescript-argonaut) and can be installed via that library. To install just `argonaut-core`:
+Install `argonaut-core` with [Spago](https://github.com/purescript/spago):
 
 ```sh
-# with Spago
 spago install argonaut-core
-
-# with Bower
-bower install purescript-argonaut-core
 ```
+
+## Quick start
+
+The quick start hasn't been written yet (contributions are welcome!). The quick start covers a common, minimal use case for the library, whereas longer examples and tutorials are kept in the [docs directory](./docs.)
 
 ## Documentation
 
-Module documentation is [published on Pursuit](https://pursuit.purescript.org/packages/purescript-argonaut-core). You may also be interested in other libraries in the Argonaut ecosystem:
+`argonaut-core` documentation is stored in a few places:
 
-- [purescript-argonaut-codecs](https://github.com/purescript-contrib/purescript-argonaut-codecs) provides codecs based on `EncodeJson` and `DecodeJson` type classes, along with instances for common data types and combinators for encoding and decoding `Json` values.
-- [purescript-codec-argonaut](https://github.com/garyb/purescript-codec-argonaut) supports an alternative approach for codecs, which are based on profunctors instead of type classes.
-- [purescript-argonaut-traversals](https://github.com/purescript-contrib/purescript-argonaut-traversals) defines prisms, traversals, and zippers for the `Json` type.
-- [purescript-argonaut-generic](https://github.com/purescript-contrib/purescript-argonaut-generic) supports generic encoding and decoding for any type with a `Generic` instance.
+1. Module documentation is [published on Pursuit](https://pursuit.purescript.org/packages/purescript-argonaut-core).
+2. Written documentation and [the changelog](./docs/CHANGELOG.md) are kept in [the docs directory](./docs).
+3. Usage examples can be found in [the test suite](./test).
 
-## Tutorial
+If you get stuck, there are several ways to get help:
 
-Some of Argonaut's functions might seem a bit arcane at first, so it can help
-to understand the underlying design decisions which make it the way it is.
-
-One approach for modelling JSON values would be to define an algebraic data
-type, like this:
-
-```purescript
-data Json
-  = JNull
-  | JString String
-  | JNumber Number
-  | JBoolean Boolean
-  | JArray (Array Json)
-  | JObject (Object Json)
-```
-
-And indeed, some might even say this is the obvious approach.
-
-Because Argonaut is written with the compilation target of JavaScript in mind,
-it takes a slightly different approach, which is to reuse the existing data
-types which JavaScript already provides. This way, the result of JavaScript's
-`JSON.parse` function is already a `Json` value, and no extra processing is
-needed before you can start operating on it. This ought to help your program
-both in terms of speed and memory churn.
-
-Much of the design of Argonaut follows naturally from this design decision.
-
-### Introducing Json values
-
-(Or, where do `Json` values come from?)
-
-If your program is receiving JSON data as a string, you probably want the
-`jsonParser` function in `Data.Argonaut.Parser`, which is a very simple wrapper
-around JavaScript's `JSON.parse`.
-
-Otherwise, `Json` values can be introduced into your program via the FFI or via
-the construction functions in `Data.Argonaut.Core`. Here are some examples:
-
-```javascript
-// In an FFI module.
-exports.someNumber = 23.6;
-exports.someBoolean = false;
-exports.someObject = {people: [{name: "john"}, {name: "jane"}], common_interests: []};
-```
-
-```purescript
-foreign import someNumber :: Json
-foreign import someBoolean :: Json
-foreign import someObject :: Json
-```
-
-Generally, if a JavaScript value could be returned from a call to `JSON.parse`,
-it's fine to import it from the FFI as `Json`. So, for example, objects,
-booleans, numbers, strings, and arrays are all fine, but functions are not.
-
-The construction functions (that is, `fromX`, or `jsonX`) can be used as
-follows:
-
-```purescript
-import Data.Tuple (Tuple(..))
-import Foreign.Object as StrMap
-import Data.Argonaut.Core as A
-
-someNumber = A.fromNumber 23.6
-someBoolean = A.fromBoolean false
-someObject = A.fromObject (StrMap.fromFoldable [
-                Tuple "people" (A.fromArray [
-                  A.jsonSingletonObject "name" (A.fromString "john"),
-                  A.jsonSingletonObject "name" (A.fromString "jane")
-                ]),
-                Tuple "common_interests" A.jsonEmptyArray
-              ])
-```
-
-### Eliminating/matching on `Json` values
-
-We can perform case analysis for `Json` values using the `caseJson` function.
-This function is necessary because `Json` is not an algebraic data type. If
-`Json` were an algebraic data type, we would not have as much need for this
-function, because we could perform pattern matching with a `case ... of`
-expression instead.
-
-The type of `caseJson` is:
-
-```purescript
-caseJson
-  :: forall a
-   . (Unit -> a)
-  -> (Boolean -> a)
-  -> (Number -> a)
-  -> (String -> a)
-  -> (Array Json -> a)
-  -> (Object Json -> a)
-  -> Json
-  -> a
-```
-
-That is, `caseJson` takes six functions, which all must return values of some
-particular type `a`, together with one `Json` value. `caseJson` itself also
-returns a value of the same type `a`.
-
-A use of `caseJson` is very similar to a `case ... of` expression, as it allows
-you to handle each of the six possibilities for the `Json` value you passed in. Thinking of it this way, each of the six function arguments is like one of the
-case alternatives.
-
-The function that takes `Unit` as an argument is for matching `null` values. As there is only one possible `null` value, we use the PureScript `Unit` type, as correspondingly there is only one possible `Unit` value.
-
-Just like in a `case ... of` expression, the final value
-that the whole expression evaluates to comes from evaluating exactly one of the
-'alternatives' (functions) that you pass in. In fact, you can tell that this
-is the case just by looking at the type signature of `caseJson`, because of a
-property called *parametricity* (although a deeper explanation of parametricity
-is outside the scope of this tutorial).
-
-For example, imagine we had the following values defined in JavaScript and
-imported via the FFI:
-
-```javascript
-exports.anotherNumber = 0.0;
-exports.anotherArray = [0.0, {foo: 'bar'}, false];
-exports.anotherObject = {foo: 1, bar: [2,2]};
-```
-
-Then we can match on them in PureScript using `caseJson`:
-
-```purescript
-foreign import anotherNumber :: Json
-foreign import anotherArray :: Json
-foreign import anotherObject :: Json
-
-basicInfo :: Json -> String
-basicInfo = caseJson
-  (const "It was null")
-  (\b -> "Got a boolean: " <>
-            if b then "it was true!" else "It was false.")
-  (\x -> "Got a number: " <> show x)
-  (\s -> "Got a string, which was " <> Data.String.length s <>
-           " characters long.")
-  (\xs -> "Got an array, which had " <> Data.Array.length xs <>
-           " items.")
-  (\obj -> "Got an object, which had " <> Foreign.Object.size obj <>
-           " items.")
-```
-
-```purescript
-basicInfo anotherNumber -- => "Got a number: 0.0"
-basicInfo anotherArray  -- => "Got an array, which had 3 items."
-basicInfo anotherObject -- => "Got an object, which had 2 items."
-```
-
-`caseJson` is the fundamental function for pattern matching on `Json` values;
-any kind of pattern matching you might want to do can be done with `caseJson`.
-
-However, `caseJson` is not always comfortable to use, so Argonaut provides a
-few other simpler versions for convenience. For example, the `caseJsonX`
-functions can be used to match on a specific type. The first argument acts as a
-default value, to be used if the `Json` value turned out not to be that type.
-For example, we can write a function which tests whether a JSON value is the
-string "lol" like this:
-
-```purescript
-caseJsonString :: forall a. a -> (String -> a) -> Json -> a
-
-isJsonLol = caseJsonString false (_ == "lol")
-```
-
-If the `Json` value is not a string, the default `false` is used. Otherwise,
-we test whether the string is equal to "lol".
-
-The `toX` functions also occupy a similar role: they attempt to convert `Json`
-values into a specific type. If the json value you provide is of the right
-type, you'll get a `Just` value. Otherwise, you'll get `Nothing`. For example,
-we could have written `isJsonLol` like this, too:
-
-```purescript
-toString :: Json -> Maybe String
-
-isJsonLol json =
-  case toString json of
-    Just str -> str == "lol"
-    Nothing  -> false
-```
+- [Open an issue](https://github.com/purescript-contrib/purescript-argonaut-core/issues) if you have encountered a bug or problem.
+- [Search or start a thread on the PureScript Discourse](https://discourse.purescript.org) if you have general questions. You can also ask questions in the `#purescript` and `#purescript-beginners` channels on the [Functional Programming Slack](https://functionalprogramming.slack.com) ([invite link](https://fpchat-invite.herokuapp.com/)).
 
 ## Contributing
 
-Read the [contribution guidelines](https://github.com/purescript-contrib/purescript-argonaut-core/blob/master/.github/contributing.md) to get started and see helpful related resources.
+You can contribute to `argonaut-core` in several ways:
+
+1. If you encounter a problem or have a question, please [open an issue](https://github.com/purescript-contrib/purescript-argonaut-core/issues). We'll do our best to work with you to resolve or answer it.
+
+2. If you would like to contribute code, tests, or documentation, please [read the contributor guide](./.github/CONTRIBUTING.md). It's a short, helpful introduction to contributing to this library, including development instructions.
+
+3. If you have written a library, tutorial, guide, or other resource based on this package, please share it on the [PureScript Discourse](https://discourse.purescript.org)! Writing libraries and learning resources are a great way to help this library succeed.
