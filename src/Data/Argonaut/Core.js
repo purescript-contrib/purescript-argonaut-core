@@ -16,6 +16,12 @@ exports.stringify = function (j) {
   return JSON.stringify(j);
 };
 
+exports.stringifyWithIndent = function (i) {
+  return function (j) {
+    return JSON.stringify(j, null, i);
+  };
+};
+
 function isArray(a) {
   return Object.prototype.toString.call(a) === "[object Array]";
 }
