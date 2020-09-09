@@ -37,6 +37,7 @@ module Data.Argonaut.Core
   , jsonEmptyObject
   , jsonSingletonObject
   , stringify
+  , stringifyWithIndent
   ) where
 
 import Prelude
@@ -178,13 +179,13 @@ toObject = toJsonType caseJsonObject
 
 -- Encoding
 
--- | Construct `Json` from a `Boolean` value 
+-- | Construct `Json` from a `Boolean` value
 foreign import fromBoolean :: Boolean -> Json
 
--- | Construct `Json` from a `Number` value 
+-- | Construct `Json` from a `Number` value
 foreign import fromNumber :: Number -> Json
 
--- | Construct `Json` from a `String` value. If you would like to parse a string 
+-- | Construct `Json` from a `String` value. If you would like to parse a string
 -- | of JSON into valid `Json`, see `jsonParser`.
 foreign import fromString :: String -> Json
 
@@ -234,6 +235,11 @@ jsonSingletonObject key val = fromObject (Obj.singleton key val)
 -- | Converts a `Json` value to a JSON string. To retrieve a string from a `Json`
 -- | string value, see `fromString`.
 foreign import stringify :: Json -> String
+
+-- | Converts a `Json` value to a JSON string.
+-- | The first `Int` argument specifies the amount of white space characters to use as indentation.
+-- | This number is capped at 10 (if it is greater, the value is just 10). Values less than 1 indicate that no space should be used.
+foreign import stringifyWithIndent :: Int -> Json -> String
 
 foreign import _caseJson
   :: forall z
