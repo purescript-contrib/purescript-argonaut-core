@@ -82,12 +82,10 @@ Updates for 1.0 core libraries.
 ## [v0.2.1](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v0.2.1) - 2015-10-29
 
 
-
 ## [v0.2.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v0.2.0) - 2015-08-19
 
 - Updated dependencies for PureScript 0.7.3 (@zudov)
 
 ## [v0.1.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v0.1.0) - 2015-07-11
 
-
-
+- Initial release
