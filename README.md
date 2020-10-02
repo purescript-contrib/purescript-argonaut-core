@@ -35,7 +35,7 @@ exports.someObject = { people: [{ name: "John" }, { name: "Jane" }] };
 ```
 
 ```purs
-foreign import someNumber  :: Json
+foreign import someNumber :: Json
 foreign import someObject :: Json
 ```
 
