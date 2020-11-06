@@ -185,8 +185,11 @@ foreign import fromBoolean :: Boolean -> Json
 -- | Construct `Json` from a `Number` value
 foreign import fromNumber :: Number -> Json
 
--- | Construct `Json` from a `String` value. If you would like to parse a string
--- | of JSON into valid `Json`, see `jsonParser`.
+-- | Construct the `Json` representation of a `String` value.
+-- | Note that this function only produces `Json` containing a single piece of `String`
+-- | data (similar to `fromBoolean`, `fromNumber`, etc.).
+-- | This function does NOT convert the `String` encoding of a JSON value to `Json` - For that
+-- | purpose, you'll need to use `jsonParser`.
 foreign import fromString :: String -> Json
 
 -- | Construct `Json` from an array of `Json` values
