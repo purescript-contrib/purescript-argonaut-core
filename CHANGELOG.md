@@ -5,42 +5,47 @@ Notable changes to this project are documented in this file. The format is based
 ## [Unreleased]
 
 Breaking changes (😱!!!):
+- Added support for PureScript 0.14 and dropped support for all previous versions (#46)
 
 New features:
 
 Bugfixes:
 
 Other improvements:
+- Removed extra spaces in README examples (#44)
+- Added more details contrasting `fromString` and `jsonParser` (#45)
+- Changed default branch to `main` from `master`
+- Backfilled the CHANGELOG using prior releases (#43)
 
 ## [v5.1.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v5.1.0) - 2020-09-09
 
-* Adds `stringifyWithIndent` function to enable pretty-printing JSON.
+- Added `stringifyWithIndent` function to enable pretty-printing JSON.
+- Updated to comply with Contributors library guidelines by adding new issue and pull request templates, updating documentation, and migrating to Spago for local development and CI (#42)
 
 ## [v5.0.2](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v5.0.2) - 2020-03-05
 
-Adds documentation comments to public functions (@thomashoneyman)
+- Added documentation comments to public functions (@thomashoneyman)
 
 ## [v5.0.1](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v5.0.1) - 2019-09-03
 
-* Fix `purs bundle` issue caused by `objToString` and `objKeys` functions in the FFI file (@joneshf)
-* Update tests for compatibility with PureScript 0.13 (@joneshf)
+- Fixed `purs bundle` issue caused by `objToString` and `objKeys` functions in the FFI file (@joneshf)
+- Updated tests for compatibility with PureScript 0.13 (@joneshf)
 
 ## [v5.0.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v5.0.0) - 2019-03-04
 
-Updated dependencies
+- Updated dependencies
 
 ## [v4.0.1](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v4.0.1) - 2018-06-23
 
-- Adds metadata including contributor guidelines
-- Pushes latest release to Pursuit
+- Added metadata including contributor guidelines
+- Pushed latest release to Pursuit
 
 ## [v4.0.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v4.0.0) - 2018-05-25
 
-Updates for 0.12
+- Updated for 0.12
 
 **Breaking changes:**
-
-- Removed the J* aliases like JArray
+- Removed the J\* aliases (like `JArray`)
 - `foldJson`, `fold*` functions are now called `caseJson`, `case*`
 
 ## [v3.1.1](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v3.1.1) - 2018-01-24
@@ -57,7 +62,7 @@ Updates for 0.12
 
 ## [v2.0.1](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v2.0.1) - 2016-10-27
 
-- Workaround for bug in DCE in `psc-bundle` #14 (@menelaos)
+- Added workaround for bug in DCE in `psc-bundle` (#14, @menelaos)
 
 ## [v2.0.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v2.0.0) - 2016-10-17
 
@@ -69,7 +74,7 @@ Updates for 0.12
 
 ## [v1.0.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v1.0.0) - 2016-06-06
 
-Updates for 1.0 core libraries.
+- Updated for 1.0 core libraries.
 
 ## [v0.2.3](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v0.2.3) - 2015-12-15
 
@@ -81,7 +86,7 @@ Updates for 1.0 core libraries.
 
 ## [v0.2.1](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v0.2.1) - 2015-10-29
 
-
+- Updated strongcheck dependency and fixed compiler warnings (#5)
 ## [v0.2.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v0.2.0) - 2015-08-19
 
 - Updated dependencies for PureScript 0.7.3 (@zudov)
