@@ -15,7 +15,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/purescript-contrib/purescript-argonaut-core.git"
+    "url": "https://github.com/purescript-contrib/purescript-argonaut-core.git"
   },
   "ignore": [
     "**/.*",
@@ -27,19 +27,21 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-arrays": "^5.0.0",
-    "purescript-control": "^4.0.0",
-    "purescript-either": "^4.0.0",
-    "purescript-foreign-object": "^2.0.0",
-    "purescript-functions": "^4.0.0",
-    "purescript-gen": "^2.0.0",
-    "purescript-maybe": "^4.0.0",
-    "purescript-nonempty": "^5.0.0",
-    "purescript-prelude": "^4.0.0",
-    "purescript-strings": "^4.0.0",
-    "purescript-tailrec": "^4.0.0"
+    "purescript-arrays": "^6.0.0",
+    "purescript-control": "^5.0.0",
+    "purescript-either": "^5.0.0",
+    "purescript-foreign-object": "^3.0.0",
+    "purescript-functions": "^5.0.0",
+    "purescript-gen": "^3.0.0",
+    "purescript-maybe": "^5.0.0",
+    "purescript-nonempty": "^6.0.0",
+    "purescript-prelude": "^5.0.0",
+    "purescript-strings": "^5.0.0",
+    "purescript-tailrec": "^5.0.0"
   },
   "devDependencies": {
-    "purescript-quickcheck": "^6.0.0"
+    "purescript-console": "^5.0.0",
+    "purescript-effect": "^3.0.0",
+    "purescript-quickcheck": "^7.0.0"
   }
 }
