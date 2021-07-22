@@ -68,7 +68,7 @@ someObject =
 Finally, you can parse JSON from a string using the `jsonParser` function. However, this isn't guaranteed to produce a correct value, so it returns an `Either` value, where a parsing error is represented with `Left` containing an error message.
 
 ```purs
-import Data.Argonaut.Core (jsonParser)
+import Data.Argonaut.Parser (jsonParser)
 import Data.Maybe (Maybe(..))
 
 someObject :: Either String Json
