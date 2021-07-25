@@ -96,7 +96,7 @@ See the [docs](./docs) for an in-depth overview of the rest of the Argonaut Core
 If you get stuck, there are several ways to get help:
 
 - [Open an issue](https://github.com/purescript-contrib/purescript-argonaut-core/issues) if you have encountered a bug or problem.
-- [Search or start a thread on the PureScript Discourse](https://discourse.purescript.org) if you have general questions. You can also ask questions in the `#purescript` and `#purescript-beginners` channels on the [Functional Programming Slack](https://functionalprogramming.slack.com) ([invite link](https://fpchat-invite.herokuapp.com/)).
+- Ask general questions on the [PureScript Discourse](https://discourse.purescript.org) forum or the [PureScript Discord](https://discord.com/invite/sMqwYUbvz6) chat.
 
 ## Contributing
 
