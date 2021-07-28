@@ -42,6 +42,8 @@
   "devDependencies": {
     "purescript-console": "^5.0.0",
     "purescript-effect": "^3.0.0",
-    "purescript-quickcheck": "^7.0.0"
+    "purescript-partial": "^3.0.0",
+    "purescript-quickcheck": "^7.0.0",
+    "purescript-tuples": "^6.0.0"
   }
 }
