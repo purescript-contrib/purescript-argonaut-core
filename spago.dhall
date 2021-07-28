@@ -10,11 +10,13 @@
   , "gen"
   , "maybe"
   , "nonempty"
+  , "partial"
   , "prelude"
   , "psci-support"
   , "quickcheck"
   , "strings"
   , "tailrec"
+  , "tuples"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
