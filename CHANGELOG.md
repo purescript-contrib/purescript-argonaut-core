@@ -11,6 +11,7 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Added `purs-tidy` formatter (#53 by @thomashoneyman)
 * Fixed readme bug where `jsonParser` was imported from `Data.Argonaut.Core` instead of `Data.Argonaut.Parser` (#50 by @flip111)
 
 ## [v6.0.0](https://github.com/purescript-contrib/purescript-argonaut-core/releases/tag/v6.0.0) - 2021-02-26
