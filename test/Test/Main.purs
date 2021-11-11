@@ -45,12 +45,12 @@ foldTest = do
 
 foldFn :: Json -> String
 foldFn = caseJson
-         (const "null")
-         (const "boolean")
-         (const "number")
-         (const "string")
-         (const "array")
-         (const "object")
+  (const "null")
+  (const "boolean")
+  (const "number")
+  (const "string")
+  (const "array")
+  (const "object")
 
 cases :: Array Json
 cases =
@@ -64,27 +64,38 @@ cases =
 
 foldXXX :: Effect Unit
 foldXXX = do
-  assert ((caseJsonNull "not null" (const "null") <$> cases) ==
-          ["null", "not null", "not null", "not null", "not null", "not null"] <?>
-          "Error in caseJsonNull")
-  assert ((caseJsonBoolean "not boolean" (const "boolean") <$> cases) ==
-          ["not boolean", "boolean", "not boolean", "not boolean", "not boolean", "not boolean"] <?>
-          "Error in caseJsonBoolean")
-  assert ((caseJsonNumber "not number" (const "number") <$> cases) ==
-          ["not number", "not number", "number", "not number", "not number", "not number"] <?>
-          "Error in caseJsonNumber")
+  assert
+    ( (caseJsonNull "not null" (const "null") <$> cases) ==
+        [ "null", "not null", "not null", "not null", "not null", "not null" ] <?>
+        "Error in caseJsonNull"
+    )
+  assert
+    ( (caseJsonBoolean "not boolean" (const "boolean") <$> cases) ==
+        [ "not boolean", "boolean", "not boolean", "not boolean", "not boolean", "not boolean" ] <?>
+        "Error in caseJsonBoolean"
+    )
+  assert
+    ( (caseJsonNumber "not number" (const "number") <$> cases) ==
+        [ "not number", "not number", "number", "not number", "not number", "not number" ] <?>
+        "Error in caseJsonNumber"
+    )
 
-  assert ((caseJsonString "not string" (const "string") <$> cases) ==
-          ["not string", "not string", "not string", "string", "not string", "not string"] <?>
-          "Error in caseJsonString")
+  assert
+    ( (caseJsonString "not string" (const "string") <$> cases) ==
+        [ "not string", "not string", "not string", "string", "not string", "not string" ] <?>
+        "Error in caseJsonString"
+    )
 
-  assert ((caseJsonArray "not array" (const "array") <$> cases) ==
-          ["not array", "not array", "not array", "not array", "array", "not array"] <?>
-          "Error in caseJsonArray")
-  assert ((caseJsonObject "not object" (const "object") <$> cases) ==
-          ["not object", "not object", "not object", "not object", "not object", "object"] <?>
-          "Error in caseJsonObject")
-
+  assert
+    ( (caseJsonArray "not array" (const "array") <$> cases) ==
+        [ "not array", "not array", "not array", "not array", "array", "not array" ] <?>
+        "Error in caseJsonArray"
+    )
+  assert
+    ( (caseJsonObject "not object" (const "object") <$> cases) ==
+        [ "not object", "not object", "not object", "not object", "not object", "object" ] <?>
+        "Error in caseJsonObject"
+    )
 
 fromTest :: Effect Unit
 fromTest = do
@@ -92,16 +103,24 @@ fromTest = do
   quickCheck (\bool -> caseJsonBoolean Nothing Just (fromBoolean bool) == Just bool <?> "Error in fromBoolean")
   quickCheck (\num -> caseJsonNumber Nothing Just (fromNumber num) == Just num <?> "Error in fromNumber")
   quickCheck (\str -> caseJsonString Nothing Just (fromString str) == Just str <?> "Error in fromString")
-  quickCheck (\num ->
-               let arr :: Array Json
-                   arr = A.singleton (fromNumber num)
-               in (caseJsonArray Nothing  Just (fromArray arr) == Just arr)
-                  <?> "Error in fromArray")
-  quickCheck (\(Tuple str num) ->
-               let sm :: Obj.Object Json
-                   sm = Obj.singleton str (fromNumber num)
-               in (caseJsonObject Nothing Just (fromObject sm) == Just sm)
-                  <?> "Error in fromObject")
+  quickCheck
+    ( \num ->
+        let
+          arr :: Array Json
+          arr = A.singleton (fromNumber num)
+        in
+          (caseJsonArray Nothing Just (fromArray arr) == Just arr)
+            <?> "Error in fromArray"
+    )
+  quickCheck
+    ( \(Tuple str num) ->
+        let
+          sm :: Obj.Object Json
+          sm = Obj.singleton str (fromNumber num)
+        in
+          (caseJsonObject Nothing Just (fromObject sm) == Just sm)
+            <?> "Error in fromObject"
+    )
 
 toTest :: Effect Unit
 toTest = do
@@ -114,10 +133,11 @@ toTest = do
   where
   assertion :: forall a. (Eq a) => (Json -> Maybe a) -> Json -> String -> Result
   assertion fn j msg =
-    let forCases = A.catMaybes (fn <$> cases)
-        exact = A.singleton $ unsafePartial fromJust $ fn j
-    in forCases == exact <?> msg
-
+    let
+      forCases = A.catMaybes (fn <$> cases)
+      exact = A.singleton $ unsafePartial fromJust $ fn j
+    in
+      forCases == exact <?> msg
 
 parserTest :: Effect Unit
 parserTest = do
@@ -128,7 +148,7 @@ parserTest = do
   roundtripTest = do
     json <- Gen.resize (const 5) genJson
     let parsed = jsonParser (stringify json)
-    pure $ parsed == Right json <?> show (stringify <$> parsed) <> " /= " <> stringify json 
+    pure $ parsed == Right json <?> show (stringify <$> parsed) <> " /= " <> stringify json
 
 assert :: forall prop. Testable prop => prop -> Effect Unit
 assert = quickCheck' 1
