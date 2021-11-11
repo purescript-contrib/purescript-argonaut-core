@@ -23,7 +23,7 @@ genJson = Gen.resize (min 5) $ Gen.sized genJson'
     | otherwise = genLeaf
 
   genLeaf :: m J.Json
-  genLeaf = Gen.oneOf $ pure J.jsonNull :| [genJBoolean, genJNumber, genJString]
+  genLeaf = Gen.oneOf $ pure J.jsonNull :| [ genJBoolean, genJNumber, genJString ]
 
   genJArray :: m J.Json
   genJArray = J.fromArray <$> Gen.unfoldable (defer \_ -> genJson)
