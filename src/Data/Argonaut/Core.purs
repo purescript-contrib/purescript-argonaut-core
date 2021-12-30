@@ -18,6 +18,7 @@ module Data.Argonaut.Core
   , isObject
   , fromBoolean
   , fromNumber
+  , fromInt
   , fromString
   , fromArray
   , fromObject
@@ -44,6 +45,7 @@ import Prelude
 
 import Data.Function.Uncurried (Fn5, runFn5, Fn7, runFn7)
 import Data.Maybe (Maybe(..))
+import Data.Int (toNumber)
 import Foreign.Object (Object)
 import Foreign.Object as Obj
 
@@ -185,6 +187,9 @@ foreign import fromBoolean :: Boolean -> Json
 
 -- | Construct `Json` from a `Number` value
 foreign import fromNumber :: Number -> Json
+
+fromInt :: Int -> Json
+fromInt int = fromNumber $ toNumber int
 
 -- | Construct the `Json` representation of a `String` value.
 -- | Note that this function only produces `Json` containing a single piece of `String`
