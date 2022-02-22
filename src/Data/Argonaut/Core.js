@@ -5,12 +5,12 @@ function id(x) {
   return x;
 }
 
-export {id as fromBoolean};
-export {id as fromNumber};
-export {id as fromString};
-export {id as fromArray};
-export {id as fromObject};
-export var jsonNull = null;
+export { id as fromBoolean };
+export { id as fromNumber };
+export { id as fromString };
+export { id as fromArray };
+export { id as fromObject };
+export const jsonNull = null;
 
 export function stringify(j) {
   return JSON.stringify(j);
