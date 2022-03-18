@@ -1,5 +1,3 @@
-"use strict";
-
 export function _jsonParser(fail, succ, s) {
   try {
     return succ(JSON.parse(s));

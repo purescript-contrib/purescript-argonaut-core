@@ -1,6 +1,4 @@
 /* eslint-disable no-eq-null, eqeqeq */
-"use strict";
-
 function id(x) {
   return x;
 }

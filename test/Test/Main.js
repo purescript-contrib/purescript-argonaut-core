@@ -1,5 +1,3 @@
-"use strict";
-
 export const thisIsNull = null;
 export const thisIsBoolean = true;
 export const thisIsNumber = 12;
