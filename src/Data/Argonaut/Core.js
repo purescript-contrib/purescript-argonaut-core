@@ -10,7 +10,7 @@ export {id as fromNumber};
 export {id as fromString};
 export {id as fromArray};
 export {id as fromObject};
-export var jsonNull = null;
+export const jsonNull = null;
 
 export function stringify(j) {
   return JSON.stringify(j);
