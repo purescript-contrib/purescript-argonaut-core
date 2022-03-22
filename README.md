@@ -4,7 +4,6 @@
 [![Release](http://img.shields.io/github/release/purescript-contrib/purescript-argonaut-core.svg)](https://github.com/purescript-contrib/purescript-argonaut-core/releases)
 [![Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core/badge)](http://pursuit.purescript.org/packages/purescript-argonaut-core)
 [![Maintainer: garyb](https://img.shields.io/badge/maintainer-garyb-teal.svg)](http://github.com/garyb)
-[![Maintainer: thomashoneyman](https://img.shields.io/badge/maintainer-thomashoneyman-teal.svg)](http://github.com/thomashoneyman)
 
 The core `Json` type for the [Argonaut](https://github.com/purescript-contrib/purescript-argonaut) libraries, along with basic parsing, printing, and folding functions which operate on it.
 
@@ -35,7 +34,7 @@ exports.someObject = { people: [{ name: "John" }, { name: "Jane" }] };
 ```
 
 ```purs
-foreign import someNumber  :: Json
+foreign import someNumber :: Json
 foreign import someObject :: Json
 ```
 
@@ -65,13 +64,13 @@ someObject =
     )
 ```
 
-Finally, you can parse JSON from a string using the `jsonParser` function. However, this isn't guaranteed to produce a correct value, so it returns a `Maybe` value.
+Finally, you can parse JSON from a string using the `jsonParser` function. However, this isn't guaranteed to produce a correct value, so it returns an `Either` value, where a parsing error is represented with `Left` containing an error message.
 
 ```purs
-import Data.Argonaut.Core (jsonParser)
+import Data.Argonaut.Parser (jsonParser)
 import Data.Maybe (Maybe(..))
 
-someObject :: Maybe Json
+someObject :: Either String Json
 someObject = jsonParser
   """
   { people: [{ name: "John" }, { name: "Jane" }] };
@@ -96,7 +95,7 @@ See the [docs](./docs) for an in-depth overview of the rest of the Argonaut Core
 If you get stuck, there are several ways to get help:
 
 - [Open an issue](https://github.com/purescript-contrib/purescript-argonaut-core/issues) if you have encountered a bug or problem.
-- [Search or start a thread on the PureScript Discourse](https://discourse.purescript.org) if you have general questions. You can also ask questions in the `#purescript` and `#purescript-beginners` channels on the [Functional Programming Slack](https://functionalprogramming.slack.com) ([invite link](https://fpchat-invite.herokuapp.com/)).
+- Ask general questions on the [PureScript Discourse](https://discourse.purescript.org) forum or the [PureScript Discord](https://purescript.org/chat) chat.
 
 ## Contributing
 

@@ -78,7 +78,8 @@ caseJson
   -> (String -> a)
   -> (Array Json -> a)
   -> (Object Json -> a)
-  -> Json -> a
+  -> Json
+  -> a
 caseJson a b c d e f json = runFn7 _caseJson a b c d e f json
 
 -- | A simpler version of `caseJson` which accepts a callback for when the
@@ -185,8 +186,11 @@ foreign import fromBoolean :: Boolean -> Json
 -- | Construct `Json` from a `Number` value
 foreign import fromNumber :: Number -> Json
 
--- | Construct `Json` from a `String` value. If you would like to parse a string
--- | of JSON into valid `Json`, see `jsonParser`.
+-- | Construct the `Json` representation of a `String` value.
+-- | Note that this function only produces `Json` containing a single piece of `String`
+-- | data (similar to `fromBoolean`, `fromNumber`, etc.).
+-- | This function does NOT convert the `String` encoding of a JSON value to `Json` - For that
+-- | purpose, you'll need to use `jsonParser`.
 foreign import fromString :: String -> Json
 
 -- | Construct `Json` from an array of `Json` values
@@ -226,7 +230,7 @@ jsonEmptyObject = fromObject Obj.empty
 
 -- | Constructs a `Json` array value containing only the provided value
 jsonSingletonArray :: Json -> Json
-jsonSingletonArray j = fromArray [j]
+jsonSingletonArray j = fromArray [ j ]
 
 -- | Constructs a `Json` object value containing only the provided key and value
 jsonSingletonObject :: String -> Json -> Json
@@ -244,13 +248,13 @@ foreign import stringifyWithIndent :: Int -> Json -> String
 foreign import _caseJson
   :: forall z
    . Fn7
-      (Unit -> z)
-      (Boolean -> z)
-      (Number -> z)
-      (String -> z)
-      (Array Json -> z)
-      (Object Json -> z)
-      Json
-      z
+       (Unit -> z)
+       (Boolean -> z)
+       (Number -> z)
+       (String -> z)
+       (Array Json -> z)
+       (Object Json -> z)
+       Json
+       z
 
 foreign import _compare :: Fn5 Ordering Ordering Ordering Json Json Ordering
