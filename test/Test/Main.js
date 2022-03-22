@@ -1,9 +1,7 @@
-"use strict";
-
-exports.thisIsNull = null;
-exports.thisIsBoolean = true;
-exports.thisIsNumber = 12;
-exports.thisIsString = "foobar";
-exports.thisIsArray = ["foo", "bar"];
-exports.thisIsObject = { foo: "bar" };
-exports.thisIsInvalidString = "\\\ffff";
+export const thisIsNull = null;
+export const thisIsBoolean = true;
+export const thisIsNumber = 12;
+export const thisIsString = "foobar";
+export const thisIsArray = ["foo", "bar"];
+export const thisIsObject = { foo: "bar" };
+export const thisIsInvalidString = "\\\ffff";

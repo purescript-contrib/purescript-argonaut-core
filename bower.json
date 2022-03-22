@@ -27,23 +27,19 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-arrays": "^6.0.0",
-    "purescript-control": "^5.0.0",
-    "purescript-either": "^5.0.0",
-    "purescript-foreign-object": "^3.0.0",
-    "purescript-functions": "^5.0.0",
-    "purescript-gen": "^3.0.0",
-    "purescript-maybe": "^5.0.0",
-    "purescript-nonempty": "^6.0.0",
-    "purescript-prelude": "^5.0.0",
-    "purescript-strings": "^5.0.0",
-    "purescript-tailrec": "^5.0.0"
+    "purescript-arrays": "master",
+    "purescript-control": "master",
+    "purescript-either": "master",
+    "purescript-foreign-object": "master",
+    "purescript-functions": "master",
+    "purescript-gen": "master",
+    "purescript-maybe": "master",
+    "purescript-nonempty": "master",
+    "purescript-prelude": "master",
+    "purescript-strings": "master",
+    "purescript-tailrec": "master"
   },
   "devDependencies": {
-    "purescript-console": "^5.0.0",
-    "purescript-effect": "^3.0.0",
-    "purescript-partial": "^3.0.0",
-    "purescript-quickcheck": "^7.0.0",
-    "purescript-tuples": "^6.0.0"
+    "purescript-quickcheck": "master"
   }
 }

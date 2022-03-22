@@ -1,33 +1,30 @@
 /* eslint-disable no-eq-null, eqeqeq */
-"use strict";
-
 function id(x) {
   return x;
 }
 
-exports.fromBoolean = id;
-exports.fromNumber = id;
-exports.fromString = id;
-exports.fromArray = id;
-exports.fromObject = id;
+export {id as fromBoolean};
+export {id as fromNumber};
+export {id as fromString};
+export {id as fromArray};
+export {id as fromObject};
+export const jsonNull = null;
 
-exports.jsonNull = null;
-
-exports.stringify = function (j) {
+export function stringify(j) {
   return JSON.stringify(j);
-};
+}
 
-exports.stringifyWithIndent = function (i) {
+export function stringifyWithIndent(i) {
   return function (j) {
     return JSON.stringify(j, null, i);
   };
-};
+}
 
 function isArray(a) {
   return Object.prototype.toString.call(a) === "[object Array]";
 }
 
-exports._caseJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
+export function _caseJson(isNull, isBool, isNum, isStr, isArr, isObj, j) {
   if (j == null) return isNull();
   else if (typeof j === "boolean") return isBool(j);
   else if (typeof j === "number") return isNum(j);
@@ -35,9 +32,9 @@ exports._caseJson = function (isNull, isBool, isNum, isStr, isArr, isObj, j) {
   else if (Object.prototype.toString.call(j) === "[object Array]")
     return isArr(j);
   else return isObj(j);
-};
+}
 
-exports._compare = function _compare(EQ, GT, LT, a, b) {
+export function _compare(EQ, GT, LT, a, b) {
   if (a == null) {
     if (b == null) return EQ;
     else return LT;
@@ -102,4 +99,4 @@ exports._compare = function _compare(EQ, GT, LT, a, b) {
       return EQ;
     }
   }
-};
+}
