@@ -59,8 +59,7 @@ instance ordJson :: Ord Json where
   compare a b = runFn5 _compare EQ GT LT a b
 
 -- | The type of null values inside JSON data. There is exactly one value of
--- | this type: in JavaScript, it is written `null`. This module exports this
--- | value as `jsonNull`.
+-- | this type: in JavaScript, it is written `null`.
 foreign import data JNull :: Type
 
 instance eqJNull :: Eq JNull where
