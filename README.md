@@ -43,6 +43,7 @@ In general, if a JavaScript value could be returned from a call to `JSON.parse` 
 You can also use the construction functions which follow the naming convention `fromX` or `jsonX`:
 
 ```purs
+import Data.Argonaut.Core
 import Data.Tuple (Tuple(..))
 import Foreign.Object as Object
 import Data.Argonaut.Core as A
@@ -67,8 +68,9 @@ someObject =
 Finally, you can parse JSON from a string using the `jsonParser` function. However, this isn't guaranteed to produce a correct value, so it returns an `Either` value, where a parsing error is represented with `Left` containing an error message.
 
 ```purs
+import Data.Argonaut.Core
 import Data.Argonaut.Parser (jsonParser)
-import Data.Maybe (Maybe(..))
+import Data.Either (Either)
 
 someObject :: Either String Json
 someObject = jsonParser
