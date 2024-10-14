@@ -1,5 +1,17 @@
 # Argonaut Core
 
+# ⚠️ This library is deprecated
+
+The `purescript-argonaut-core` library is now **deprecated** in favor of the [`purescript-json`](https://github.com/purescript/purescript-json) library.
+
+The `purescript-json` library is actively maintained and provides a more modern, efficient approach to JSON handling in PureScript. We recommend migrating your projects to `purescript-json` for continued support and improvements.
+
+For more information and migration guidelines, please refer to the [`purescript-json`](https://github.com/purescript/purescript-json) repository.
+
+Thank you for using `purescript-argonaut-core`!
+
+-----
+
 [![CI](https://github.com/purescript-contrib/purescript-argonaut-core/workflows/CI/badge.svg?branch=main)](https://github.com/purescript-contrib/purescript-argonaut-core/actions?query=workflow%3ACI+branch%3Amain)
 [![Release](http://img.shields.io/github/release/purescript-contrib/purescript-argonaut-core.svg)](https://github.com/purescript-contrib/purescript-argonaut-core/releases)
 [![Pursuit](http://pursuit.purescript.org/packages/purescript-argonaut-core/badge)](http://pursuit.purescript.org/packages/purescript-argonaut-core)
