@@ -5,13 +5,15 @@ import Prelude
 import Control.Monad.Gen as Gen
 import Data.Argonaut.Core (Json, caseJson, caseJsonArray, caseJsonBoolean, caseJsonNull, caseJsonNumber, caseJsonObject, caseJsonString, fromArray, fromBoolean, fromNumber, fromObject, fromString, isArray, isBoolean, isNull, isNumber, isObject, isString, jsonNull, stringify, toArray, toBoolean, toNull, toNumber, toObject, toString)
 import Data.Argonaut.Gen (genJson)
-import Data.Argonaut.Parser (jsonParser)
+import Data.Argonaut.Custom as Custom
+import Data.Argonaut.Parser (jsonParser, customJsonParser)
 import Data.Array as A
-import Data.Either (isLeft, Either(..))
+import Data.Either (Either(..), isLeft)
 import Data.Maybe (Maybe(..), fromJust)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
 import Effect.Console (log)
+import Effect.Exception (throwException, error)
 import Foreign.Object as Obj
 import Partial.Unsafe (unsafePartial)
 import Test.QuickCheck (class Testable, Result, quickCheck, quickCheck', (<?>))
@@ -150,6 +152,28 @@ parserTest = do
     let parsed = jsonParser (stringify json)
     pure $ parsed == Right json <?> show (stringify <$> parsed) <> " /= " <> stringify json
 
+customJsonTest :: Effect Unit
+customJsonTest = do
+  let
+    parseNumberAsString :: String -> Maybe (Custom.CustomNumber String)
+    parseNumberAsString = Just <<< Custom.mkCustomNumber
+    trivialParser :: String -> Either String (Custom.Json (Custom.CustomNumber String))
+    trivialParser = customJsonParser parseNumberAsString
+  case trivialParser "1e100" of
+    Left err -> throwException $ error $ "Failed to parse: " <> err
+    Right success -> do
+      assert $ Custom.isNumber success
+      let enc :: Custom.CustomNumber String -> String
+          enc = Custom.customNumberContent
+      assert $ Custom.stringify enc success == Right "1e100"
+      assert $ isLeft $ Custom.stringify (\_ -> "invalid") success
+      assert $ Custom.fromNumber (Custom.mkCustomNumber "1e100") == success
+      assert $ Custom.fromString "1e100" /= success
+  let
+    failAlways :: String -> Maybe (Custom.CustomNumber Void)
+    failAlways _ = Nothing
+  assert $ Left "Could not decode with custom numeral parser: 1e100" == customJsonParser failAlways "1e100"
+
 assert :: forall prop. Testable prop => prop -> Effect Unit
 assert = quickCheck' 1
 
@@ -167,3 +191,7 @@ main = do
   toTest
   log "jsonParser tests"
   parserTest
+  log "customJson tests"
+  log "These tests may fail on older JavaScript runtimes, like Node.js 20."
+  log "See https://caniuse.com/wf-json-raw"
+  customJsonTest

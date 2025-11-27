@@ -8,6 +8,10 @@ Breaking changes:
 
 New features:
 
+* New module `Data.Argonaut.Custom` allows for user-defined handling of JSON
+  numerals. This enables avoiding IEEE 754, which does not have infinite
+  precision.
+
 Bugfixes:
 
 Other improvements:
