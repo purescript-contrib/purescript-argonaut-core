@@ -3,11 +3,9 @@
 !.github
 !.editorconfig
 !.tidyrc.json
-!.eslintrc.json
 
 output
 generated-docs
-bower_components
 
 node_modules
 *.lock
